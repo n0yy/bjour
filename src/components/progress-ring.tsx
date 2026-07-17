@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
-import { useComicColors } from '@/hooks/use-comic-colors';
+import { useColors } from '@/hooks/use-colors';
 
 export function ProgressRing({
   size,
@@ -15,7 +15,7 @@ export function ProgressRing({
   label: string;
   sublabel?: string;
 }) {
-  const colors = useComicColors();
+  const colors = useColors();
   const stroke = Math.max(6, Math.round(size * 0.14));
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;

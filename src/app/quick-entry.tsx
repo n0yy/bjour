@@ -11,7 +11,7 @@ import { formatRupiah } from '@/domain/currency';
 import { todayLocalDate } from '@/domain/local-date';
 import type { AssetWithBalance, CategoryGroup, LocalDate, TransactionKind } from '@/domain/types';
 import { useAmountInput } from '@/hooks/use-amount-input';
-import { useComicColors } from '@/hooks/use-comic-colors';
+import { useColors } from '@/hooks/use-colors';
 import { useLedger } from '@/providers/ledger-provider';
 
 const SEGMENTS: { value: TransactionKind; label: string }[] = [
@@ -30,7 +30,7 @@ export default function QuickEntryScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const isEditing = typeof id === 'string';
   const ledger = useLedger();
-  const colors = useComicColors();
+  const colors = useColors();
 
   const [kind, setKind] = useState<TransactionKind>('expense');
   const { amount, setAmount, pressKey } = useAmountInput(0);

@@ -8,7 +8,7 @@ import { SegmentedControl } from '@/components/segmented-control';
 import { formatRupiah } from '@/domain/currency';
 import type { AssetKind } from '@/domain/types';
 import { useAmountInput } from '@/hooks/use-amount-input';
-import { useComicColors } from '@/hooks/use-comic-colors';
+import { useColors } from '@/hooks/use-colors';
 import { useLedger } from '@/providers/ledger-provider';
 
 const KIND_OPTIONS: { value: AssetKind; label: string }[] = [
@@ -22,7 +22,7 @@ export default function ManageAssetScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const isEditing = typeof id === 'string';
   const ledger = useLedger();
-  const colors = useComicColors();
+  const colors = useColors();
 
   const [name, setName] = useState('');
   const [kind, setKind] = useState<AssetKind>('cash');

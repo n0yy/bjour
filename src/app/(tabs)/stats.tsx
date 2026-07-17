@@ -9,7 +9,7 @@ import { SegmentedControl } from '@/components/segmented-control';
 import { formatRupiah } from '@/domain/currency';
 import { formatSignedAmount, transactionLabel } from '@/domain/transaction-presentation';
 import type { Category, CategoryStat, Transaction } from '@/domain/types';
-import { useCategoryPalette } from '@/hooks/use-comic-colors';
+import { useCategoryPalette } from '@/hooks/use-colors';
 import { useActiveMonth } from '@/providers/active-month-provider';
 import { useLedger } from '@/providers/ledger-provider';
 

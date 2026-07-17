@@ -3,7 +3,7 @@ import Svg, { Circle } from 'react-native-svg';
 
 import { formatRupiahShort } from '@/domain/currency';
 import type { CategoryStat } from '@/domain/types';
-import { useCategoryPalette, useComicColors } from '@/hooks/use-comic-colors';
+import { useCategoryPalette, useColors } from '@/hooks/use-colors';
 
 const SIZE = 140;
 const STROKE = 20;
@@ -42,7 +42,7 @@ function buildSegments(stats: CategoryStat[], palette: string[]): DonutSegment[]
 }
 
 export function CategoryDonut({ stats, total }: { stats: CategoryStat[]; total: number }) {
-  const colors = useComicColors();
+  const colors = useColors();
   const palette = useCategoryPalette();
   const segments = buildSegments(stats, palette);
 

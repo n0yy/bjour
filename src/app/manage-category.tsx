@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { SegmentedControl } from '@/components/segmented-control';
 import type { Category, CategoryGroup } from '@/domain/types';
-import { useComicColors } from '@/hooks/use-comic-colors';
+import { useColors } from '@/hooks/use-colors';
 import { useLedger } from '@/providers/ledger-provider';
 
 const DIRECTION_OPTIONS: { value: Category['direction']; label: string }[] = [
@@ -80,7 +80,7 @@ function CategoryRow({
 export default function ManageCategoryScreen() {
   const params = useLocalSearchParams<{ direction?: string }>();
   const ledger = useLedger();
-  const colors = useComicColors();
+  const colors = useColors();
 
   const [direction, setDirection] = useState<Category['direction']>(
     params.direction === 'income' ? 'income' : 'expense',

@@ -21,10 +21,6 @@ module.exports = {
         3: '3px',
       },
       fontFamily: {
-        // Comic-style display face for headings/amounts; the actual bundled typeface
-        // lands in the visual-polish ticket (.scratch/bjour-fase-1-ledger/issues/10-polish-visual-komik.md).
-        // 'ui-rounded' resolves to San Francisco Rounded on iOS; platforms/browsers that
-        // don't recognize it fall back to their default system font, so this is safe everywhere.
         display: ['ui-rounded'],
       },
     },
