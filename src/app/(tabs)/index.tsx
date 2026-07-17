@@ -100,7 +100,10 @@ export default function HomeScreen() {
                         : formatRupiah(transaction.amount);
 
                   return (
-                    <View key={transaction.id} className="flex-row items-center gap-3 border-b border-fill bg-card px-3 py-2">
+                    <Pressable
+                      key={transaction.id}
+                      onPress={() => router.push({ pathname: '/quick-entry', params: { id: transaction.id } })}
+                      className="flex-row items-center gap-3 border-b border-fill bg-card px-3 py-2">
                       <View className="h-7 w-7 rounded-md bg-fill" />
                       <View className="flex-1">
                         <Text className="text-ink">{transactionLabel(transaction)}</Text>
@@ -109,7 +112,7 @@ export default function HomeScreen() {
                       <Text className={`font-semibold ${transaction.kind === 'transfer' ? 'text-muted' : 'text-ink'}`}>
                         {amountText}
                       </Text>
-                    </View>
+                    </Pressable>
                   );
                 })}
               </View>
