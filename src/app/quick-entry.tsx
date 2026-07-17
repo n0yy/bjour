@@ -9,7 +9,7 @@ import { DateField } from '@/components/date-field';
 import { SegmentedControl } from '@/components/segmented-control';
 import { formatRupiah } from '@/domain/currency';
 import { todayLocalDate } from '@/domain/local-date';
-import type { AssetWithBalance, Category, LocalDate, TransactionKind } from '@/domain/types';
+import type { AssetWithBalance, CategoryGroup, LocalDate, TransactionKind } from '@/domain/types';
 import { useAmountInput } from '@/hooks/use-amount-input';
 import { useLedger } from '@/providers/ledger-provider';
 
@@ -53,8 +53,19 @@ export default function QuickEntryScreen() {
       ? secondaryAssetIdOverride
       : (pickableAssets.find((a) => a.id !== primaryAssetId)?.id ?? null);
 
-  const [categories, setCategories] = useState<Category[]>([]);
+  // Full tree for the current kind, including deactivated categories — used to
+  // tell "belongs to this kind but got deactivated" apart from "belongs to a
+  // different kind entirely" (only the latter should reset categoryId).
+  const [categoryTree, setCategoryTree] = useState<CategoryGroup[]>([]);
   const [categoryId, setCategoryId] = useState<string | null>(null);
+  // What's actually offered as chips: active categories, plus the one already
+  // selected (e.g. editing an old transaction whose category got deactivated).
+  const pickableCategoryTree = categoryTree
+    .filter((g) => g.parent.active || g.parent.id === categoryId || g.children.some((c) => c.id === categoryId))
+    .map((g) => ({ parent: g.parent, children: g.children.filter((c) => c.active || c.id === categoryId) }));
+  const selectedGroup =
+    pickableCategoryTree.find((g) => g.parent.id === categoryId || g.children.some((c) => c.id === categoryId)) ??
+    null;
 
   useEffect(() => {
     ledger.listAssets().then(setAssets);
@@ -81,10 +92,16 @@ export default function QuickEntryScreen() {
 
   useEffect(() => {
     if (kind === 'transfer') return;
-    const load = kind === 'income' ? ledger.listIncomeCategories() : ledger.listExpenseCategories();
-    load.then((loaded) => {
-      setCategories(loaded);
-      setCategoryId((current) => (current && loaded.some((c) => c.id === current) ? current : (loaded[0]?.id ?? null)));
+    ledger.listCategoryTree(kind, { includeInactive: true }).then((tree) => {
+      setCategoryTree(tree);
+      setCategoryId((current) => {
+        // Reset only when categoryId belongs to a different kind entirely (or
+        // is unset) — a deactivated-but-still-this-kind category is kept, see
+        // pickableCategoryTree, so an old transaction never gets silently
+        // recategorized just by opening it for edit.
+        const belongsToThisKind = tree.some((g) => g.parent.id === current || g.children.some((c) => c.id === current));
+        return belongsToThisKind ? current : (tree.find((g) => g.parent.active)?.parent.id ?? null);
+      });
     });
   }, [ledger, kind]);
 
@@ -183,16 +200,30 @@ export default function QuickEntryScreen() {
             </ScrollView>
           </View>
 
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="max-h-14 border-b border-fill px-2 py-2">
-            {categories.map((category) => (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="border-b border-fill px-2 py-2">
+            {pickableCategoryTree.map((group) => (
               <Chip
-                key={category.id}
-                label={category.name}
-                selected={categoryId === category.id}
-                onPress={() => setCategoryId(category.id)}
+                key={group.parent.id}
+                label={group.parent.name}
+                selected={selectedGroup?.parent.id === group.parent.id}
+                onPress={() => setCategoryId(group.parent.id)}
               />
             ))}
           </ScrollView>
+
+          {selectedGroup && selectedGroup.children.length > 0 && (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="border-b border-fill px-2 py-2">
+              {selectedGroup.children.map((child) => (
+                <Chip key={child.id} label={child.name} selected={categoryId === child.id} onPress={() => setCategoryId(child.id)} />
+              ))}
+            </ScrollView>
+          )}
+
+          <Pressable
+            onPress={() => router.push({ pathname: '/manage-category', params: { direction: kind } })}
+            className="border-b border-fill px-4 py-2">
+            <Text className="text-xs text-muted">Kelola kategori…</Text>
+          </Pressable>
         </>
       )}
 
