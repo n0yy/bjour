@@ -4,10 +4,20 @@ function pad2(n: number): string {
   return String(n).padStart(2, '0');
 }
 
+/** Converts a JS Date (read using local getters) to a 'YYYY-MM-DD' LocalDate string. */
+export function toLocalDate(date: Date): LocalDate {
+  return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+}
+
 /** Local calendar date, not a UTC timestamp — matches the device's own clock. */
 export function todayLocalDate(clock: () => Date = () => new Date()): LocalDate {
-  const d = clock();
-  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+  return toLocalDate(clock());
+}
+
+/** Parses a 'YYYY-MM-DD' LocalDate string into a JS Date at local midnight. */
+export function parseLocalDate(date: LocalDate): Date {
+  const [year, month, day] = date.split('-').map(Number);
+  return new Date(year, month - 1, day);
 }
 
 export function lastDayOfMonth(year: number, month: number): number {

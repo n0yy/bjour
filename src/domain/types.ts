@@ -58,8 +58,35 @@ export type NewTransferInput = {
   note?: string | null;
 };
 
+export type TransactionEditInput =
+  | ({ kind: 'expense' } & NewExpenseInput)
+  | ({ kind: 'income' } & NewIncomeInput)
+  | ({ kind: 'transfer' } & NewTransferInput);
+
 export interface AssetWithBalance extends Asset {
   balance: number;
+}
+
+export type NewAssetInput = {
+  name: string;
+  kind: AssetKind;
+  openingBalance: number;
+};
+
+export type AssetDetailsPatch = {
+  name?: string;
+  kind?: AssetKind;
+};
+
+export type NewCategoryInput = {
+  name: string;
+  direction: Category['direction'];
+  parentId?: string | null;
+};
+
+export interface CategoryGroup {
+  parent: Category;
+  children: Category[];
 }
 
 export interface DailyGroup {

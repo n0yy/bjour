@@ -3,9 +3,18 @@ import type { Asset, Category, LocalDate, Transaction } from '@/domain/types';
 export interface LedgerStorage {
   listAssets(): Promise<Asset[]>;
   insertAsset(asset: Asset): Promise<void>;
+  updateAsset(asset: Asset): Promise<void>;
+  deleteAsset(id: string): Promise<void>;
+
   listCategories(): Promise<Category[]>;
   insertCategory(category: Category): Promise<void>;
+  updateCategory(category: Category): Promise<void>;
+  deleteCategory(id: string): Promise<void>;
+
   insertTransaction(transaction: Transaction): Promise<void>;
+  updateTransaction(transaction: Transaction): Promise<void>;
+  deleteTransaction(id: string): Promise<void>;
+  getTransactionById(id: string): Promise<Transaction | null>;
   /** Inclusive on both ends. */
   listTransactionsByDateRange(start: LocalDate, end: LocalDate): Promise<Transaction[]>;
   /** All transactions ever recorded — used to compute asset balances and total wealth. */

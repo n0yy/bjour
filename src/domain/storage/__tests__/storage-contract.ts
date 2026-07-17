@@ -63,6 +63,27 @@ export function runStorageContractTests(createStorage: () => Promise<LedgerStora
       const assets = await storage.listAssets();
       expect(assets).toEqual([makeAsset({ active: false })]);
     });
+
+    it('updates an asset in place', async () => {
+      const storage = await createStorage();
+      await storage.insertAsset(makeAsset());
+
+      await storage.updateAsset(makeAsset({ name: 'Dompet', kind: 'e-wallet', active: false }));
+
+      const [asset] = await storage.listAssets();
+      expect(asset).toEqual(makeAsset({ name: 'Dompet', kind: 'e-wallet', active: false }));
+    });
+
+    it('deletes an asset', async () => {
+      const storage = await createStorage();
+      await storage.insertAsset(makeAsset());
+      await storage.insertAsset(makeAsset({ id: 'asset-bca', name: 'Rekening BCA', kind: 'bank' }));
+
+      await storage.deleteAsset('asset-cash');
+
+      const assets = await storage.listAssets();
+      expect(assets.map((a) => a.id)).toEqual(['asset-bca']);
+    });
   });
 
   describe('categories', () => {
@@ -83,6 +104,27 @@ export function runStorageContractTests(createStorage: () => Promise<LedgerStora
       const categories = await storage.listCategories();
       expect(categories).toHaveLength(2);
       expect(categories.find((c) => c.id === 'cat-food-eatout')?.parentId).toBe('cat-food');
+    });
+
+    it('updates a category in place', async () => {
+      const storage = await createStorage();
+      await storage.insertCategory(makeCategory());
+
+      await storage.updateCategory(makeCategory({ name: 'Makan & Minum', active: false }));
+
+      const [category] = await storage.listCategories();
+      expect(category).toEqual(makeCategory({ name: 'Makan & Minum', active: false }));
+    });
+
+    it('deletes a category', async () => {
+      const storage = await createStorage();
+      await storage.insertCategory(makeCategory());
+      await storage.insertCategory(makeCategory({ id: 'cat-transport', name: 'Transportasi' }));
+
+      await storage.deleteCategory('cat-food');
+
+      const categories = await storage.listCategories();
+      expect(categories.map((c) => c.id)).toEqual(['cat-transport']);
     });
   });
 
@@ -150,6 +192,44 @@ export function runStorageContractTests(createStorage: () => Promise<LedgerStora
       const [transaction] = await storage.listTransactionsByDateRange('2026-07-01', '2026-07-31');
       expect(transaction.toAssetId).toBe('asset-cash');
       expect(transaction.categoryId).toBeNull();
+    });
+
+    it('updates a transaction in place, including moving it to a different date', async () => {
+      const storage = await createStorage();
+      await storage.insertAsset(makeAsset());
+      await storage.insertCategory(makeCategory());
+      await storage.insertTransaction(makeTransaction());
+
+      await storage.updateTransaction(
+        makeTransaction({ amount: 99_000, date: '2026-08-01', note: 'diedit', updatedAt: '2026-08-01T00:00:00.000Z' }),
+      );
+
+      expect(await storage.listTransactionsByDateRange('2026-07-01', '2026-07-31')).toEqual([]);
+      const [moved] = await storage.listTransactionsByDateRange('2026-08-01', '2026-08-31');
+      expect(moved).toEqual(
+        makeTransaction({ amount: 99_000, date: '2026-08-01', note: 'diedit', updatedAt: '2026-08-01T00:00:00.000Z' }),
+      );
+    });
+
+    it('deletes a transaction', async () => {
+      const storage = await createStorage();
+      await storage.insertAsset(makeAsset());
+      await storage.insertCategory(makeCategory());
+      await storage.insertTransaction(makeTransaction());
+
+      await storage.deleteTransaction('tx-1');
+
+      expect(await storage.listTransactionsByDateRange('2026-07-01', '2026-07-31')).toEqual([]);
+    });
+
+    it('gets a transaction by id, or null if it does not exist', async () => {
+      const storage = await createStorage();
+      await storage.insertAsset(makeAsset());
+      await storage.insertCategory(makeCategory());
+      await storage.insertTransaction(makeTransaction());
+
+      expect(await storage.getTransactionById('tx-1')).toEqual(makeTransaction());
+      expect(await storage.getTransactionById('does-not-exist')).toBeNull();
     });
   });
 

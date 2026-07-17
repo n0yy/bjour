@@ -91,6 +91,17 @@ export async function createSqliteStorage(executor: SqlExecutor): Promise<Ledger
       );
     },
 
+    async updateAsset(asset: Asset) {
+      await executor.runAsync(
+        `UPDATE assets SET name = ?, kind = ?, opening_balance = ?, active = ?, created_at = ? WHERE id = ?`,
+        [asset.name, asset.kind, asset.openingBalance, asset.active ? 1 : 0, asset.createdAt, asset.id],
+      );
+    },
+
+    async deleteAsset(id: string) {
+      await executor.runAsync('DELETE FROM assets WHERE id = ?', [id]);
+    },
+
     async listCategories() {
       const rows = await executor.getAllAsync<CategoryRow>('SELECT * FROM categories', []);
       return rows.map(categoryFromRow);
@@ -102,6 +113,17 @@ export async function createSqliteStorage(executor: SqlExecutor): Promise<Ledger
          VALUES (?, ?, ?, ?, ?)`,
         [category.id, category.name, category.direction, category.parentId, category.active ? 1 : 0],
       );
+    },
+
+    async updateCategory(category: Category) {
+      await executor.runAsync(
+        `UPDATE categories SET name = ?, direction = ?, parent_id = ?, active = ? WHERE id = ?`,
+        [category.name, category.direction, category.parentId, category.active ? 1 : 0, category.id],
+      );
+    },
+
+    async deleteCategory(id: string) {
+      await executor.runAsync('DELETE FROM categories WHERE id = ?', [id]);
     },
 
     async insertTransaction(transaction: Transaction) {
@@ -122,6 +144,34 @@ export async function createSqliteStorage(executor: SqlExecutor): Promise<Ledger
           transaction.updatedAt,
         ],
       );
+    },
+
+    async updateTransaction(transaction: Transaction) {
+      await executor.runAsync(
+        `UPDATE transactions
+         SET kind = ?, amount = ?, date = ?, asset_id = ?, to_asset_id = ?, category_id = ?, note = ?, updated_at = ?
+         WHERE id = ?`,
+        [
+          transaction.kind,
+          transaction.amount,
+          transaction.date,
+          transaction.assetId,
+          transaction.toAssetId,
+          transaction.categoryId,
+          transaction.note,
+          transaction.updatedAt,
+          transaction.id,
+        ],
+      );
+    },
+
+    async deleteTransaction(id: string) {
+      await executor.runAsync('DELETE FROM transactions WHERE id = ?', [id]);
+    },
+
+    async getTransactionById(id: string) {
+      const row = await executor.getFirstAsync<TransactionRow>('SELECT * FROM transactions WHERE id = ?', [id]);
+      return row ? transactionFromRow(row) : null;
     },
 
     async listTransactionsByDateRange(start: LocalDate, end: LocalDate) {

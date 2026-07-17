@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 
-import { lastDayOfMonth, monthRange, todayLocalDate } from '@/domain/local-date';
+import { lastDayOfMonth, monthRange, parseLocalDate, toLocalDate, todayLocalDate } from '@/domain/local-date';
 
 describe('todayLocalDate', () => {
   it('formats using the local calendar date, zero-padded', () => {
@@ -26,5 +26,13 @@ describe('lastDayOfMonth', () => {
 describe('monthRange', () => {
   it('spans the whole month, inclusive', () => {
     expect(monthRange(2026, 7)).toEqual({ start: '2026-07-01', end: '2026-07-31' });
+  });
+});
+
+describe('toLocalDate / parseLocalDate', () => {
+  it('round-trips a date without shifting due to timezone', () => {
+    const date = new Date(2026, 0, 31); // 31 January, local time
+    expect(toLocalDate(date)).toBe('2026-01-31');
+    expect(parseLocalDate('2026-01-31')).toEqual(date);
   });
 });
