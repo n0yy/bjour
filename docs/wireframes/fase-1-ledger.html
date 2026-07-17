@@ -1,0 +1,1193 @@
+<title>BJour — Wireframe Fase 1 (Ledger)</title>
+<style>
+  :root {
+    --paper: #F6F6F3;
+    --ink: #26272B;
+    --muted: #6D6E67;
+    --fill: #E6E6E2;
+    --fill-2: #DDDDD8;
+    --line: #A9A9A3;
+    --frame: #4A4B46;
+    --accent: #2F5FE0;
+    --accent-ink: #fff;
+    --card: #FFFFFF;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #17181B;
+      --ink: #E8E8E4;
+      --muted: #9B9C94;
+      --fill: #26272B;
+      --fill-2: #2F3035;
+      --line: #55564F;
+      --frame: #8A8B84;
+      --accent: #7C97F2;
+      --accent-ink: #0E1013;
+      --card: #1E1F23;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #17181B;
+    --ink: #E8E8E4;
+    --muted: #9B9C94;
+    --fill: #26272B;
+    --fill-2: #2F3035;
+    --line: #55564F;
+    --frame: #8A8B84;
+    --accent: #7C97F2;
+    --accent-ink: #0E1013;
+    --card: #1E1F23;
+  }
+
+  :root[data-theme="light"] {
+    --paper: #F6F6F3;
+    --ink: #26272B;
+    --muted: #6D6E67;
+    --fill: #E6E6E2;
+    --fill-2: #DDDDD8;
+    --line: #A9A9A3;
+    --frame: #4A4B46;
+    --accent: #2F5FE0;
+    --accent-ink: #fff;
+    --card: #FFFFFF;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 2.5rem 1.25rem 5rem;
+  }
+
+  .mono {
+    font-family: ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
+  }
+
+  main {
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+
+  header.page {
+    margin-bottom: 3rem;
+    max-width: 62ch;
+  }
+
+  .eyebrow {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 .6rem;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+    line-height: 1.2;
+    margin: 0 0 .75rem;
+    text-wrap: balance;
+    font-weight: 700;
+  }
+
+  header.page p {
+    color: var(--muted);
+    margin: .25rem 0;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: .75rem;
+    border-top: 2px solid var(--ink);
+    padding-top: .9rem;
+    margin: 3rem 0 1.25rem;
+  }
+
+  .sec-head .no {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: .8rem;
+    color: var(--accent);
+    letter-spacing: .1em;
+  }
+
+  .sec-head .us {
+    margin-left: auto;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: .7rem;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-align: right;
+  }
+
+  .screen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  /* ---------- phone frame ---------- */
+  .phone {
+    flex: 0 0 300px;
+    width: 300px;
+    box-sizing: border-box;
+    border: 2px solid var(--frame);
+    border-radius: 26px;
+    background: var(--card);
+    padding: 14px 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 560px;
+    font-size: .78rem;
+    line-height: 1.35;
+    position: relative;
+  }
+
+  .phone * {
+    box-sizing: border-box;
+  }
+
+  .p-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 600;
+    padding: 2px 0 4px;
+  }
+
+  .p-title .chev {
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+  }
+
+  .grow {
+    flex: 1;
+  }
+
+  .box {
+    background: var(--fill);
+    border-radius: 6px;
+  }
+
+  .outline {
+    border: 1.5px dashed var(--line);
+    border-radius: 6px;
+    background: transparent;
+  }
+
+  .bar {
+    height: 10px;
+    border-radius: 5px;
+    background: var(--fill-2);
+  }
+
+  .chip {
+    background: var(--fill);
+    border-radius: 99px;
+    padding: 3px 10px;
+    font-size: .7rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .amount-pos::before {
+    content: "+"
+  }
+
+  .muted {
+    color: var(--muted);
+  }
+
+  .tiny {
+    font-size: .66rem;
+  }
+
+  .right {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .summary {
+    display: flex;
+    gap: 6px;
+  }
+
+  .summary .cell {
+    flex: 1;
+    background: var(--fill);
+    border-radius: 8px;
+    padding: 6px 8px;
+    text-align: center;
+  }
+
+  .cell .lab {
+    font-size: .62rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  .cell .val {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .group-h {
+    display: flex;
+    background: var(--fill-2);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-weight: 600;
+    align-items: center;
+  }
+
+  .tx {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 5px 4px;
+    border-bottom: 1px solid var(--fill);
+    position: relative;
+  }
+
+  .tx .ico {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: var(--fill);
+    flex: none;
+  }
+
+  .tx .amt {
+    margin-left: auto;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .tabbar {
+    margin-top: auto;
+    display: flex;
+    border-top: 1.5px solid var(--line);
+    padding-top: 8px;
+    position: relative;
+  }
+
+  .tabbar .tab {
+    flex: 1;
+    text-align: center;
+    font-size: .62rem;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: center;
+  }
+
+  .tabbar .tab .ic {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: var(--fill-2);
+  }
+
+  .tabbar .tab.on {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .tabbar .tab.on .ic {
+    background: var(--frame);
+  }
+
+  .fab {
+    position: absolute;
+    right: 16px;
+    bottom: 64px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--frame);
+    color: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+
+  .prog-card {
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 8px 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    position: relative;
+  }
+
+  .ring {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    flex: none;
+    background: conic-gradient(var(--frame) 0 216deg, var(--fill) 216deg 360deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ring .hole {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .58rem;
+    font-weight: 700;
+  }
+
+  .seg {
+    display: flex;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .seg span {
+    flex: 1;
+    text-align: center;
+    padding: 5px 0;
+    font-size: .7rem;
+    color: var(--muted);
+  }
+
+  .seg span.on {
+    background: var(--frame);
+    color: var(--card);
+    font-weight: 700;
+  }
+
+  .bigamt {
+    text-align: right;
+    font-size: 1.6rem;
+    font-weight: 700;
+    padding: 10px 8px;
+    border-bottom: 2px solid var(--ink);
+    font-variant-numeric: tabular-nums;
+    position: relative;
+  }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 6px;
+    border-bottom: 1px solid var(--fill);
+    position: relative;
+  }
+
+  .field .lab {
+    width: 64px;
+    flex: none;
+    color: var(--muted);
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+
+  .field .val {
+    font-weight: 600;
+  }
+
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: auto;
+  }
+
+  .keypad div {
+    background: var(--fill);
+    border-radius: 8px;
+    text-align: center;
+    padding: 10px 0;
+    font-weight: 600;
+  }
+
+  .save {
+    grid-column: 1/-1;
+    background: var(--frame);
+    color: var(--card);
+    border-radius: 8px;
+    text-align: center;
+    padding: 10px 0;
+    font-weight: 700;
+    position: relative;
+  }
+
+  .cal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+  }
+
+  .cal .dow {
+    text-align: center;
+    font-size: .58rem;
+    color: var(--muted);
+    padding: 2px 0;
+  }
+
+  .cal .d {
+    border: 1px solid var(--fill);
+    border-radius: 5px;
+    min-height: 44px;
+    padding: 2px 3px;
+    font-size: .6rem;
+    position: relative;
+  }
+
+  .cal .d .n {
+    font-weight: 600;
+  }
+
+  .cal .d .io {
+    display: block;
+    font-size: .52rem;
+    line-height: 1.25;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cal .d.sel {
+    border: 2px solid var(--frame);
+  }
+
+  .cal .d.mutedd {
+    opacity: .35;
+  }
+
+  .sheet {
+    border: 1.5px solid var(--line);
+    border-radius: 12px 12px 0 0;
+    padding: 8px 10px 4px;
+    margin: -2px -4px 0;
+    position: relative;
+  }
+
+  .handle {
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+    margin: 0 auto 6px;
+  }
+
+  .donut {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 6px auto;
+    background: conic-gradient(var(--frame) 0 130deg, var(--line) 130deg 210deg, var(--fill-2) 210deg 290deg, var(--fill) 290deg 360deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .donut .hole {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--card);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: .6rem;
+  }
+
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 4px;
+    border-bottom: 1px solid var(--fill);
+    position: relative;
+  }
+
+  .sw {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex: none;
+  }
+
+  .asset-g {
+    background: var(--fill-2);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: .66rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--muted);
+  }
+
+  .check {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: .72rem;
+    padding: 3px 0;
+  }
+
+  .ck {
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+    border: 1.5px solid var(--line);
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .6rem;
+  }
+
+  .ck.done {
+    background: var(--frame);
+    border-color: var(--frame);
+    color: var(--card);
+  }
+
+  .lockbtn {
+    border: 1.5px dashed var(--line);
+    color: var(--muted);
+    border-radius: 8px;
+    text-align: center;
+    padding: 9px 0;
+    font-weight: 600;
+    position: relative;
+  }
+
+  .ctabtn {
+    background: var(--frame);
+    color: var(--card);
+    border-radius: 8px;
+    text-align: center;
+    padding: 9px 0;
+    font-weight: 700;
+    position: relative;
+  }
+
+  /* ---------- annotations ---------- */
+  .dot {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: .6rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+  }
+
+  .dot.abs {
+    position: absolute;
+    right: -7px;
+    top: -7px;
+    z-index: 2;
+  }
+
+  .notes {
+    flex: 1 1 320px;
+    min-width: 280px;
+  }
+
+  .notes ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+  }
+
+  .notes li {
+    display: flex;
+    gap: .65rem;
+    align-items: flex-start;
+    font-size: .86rem;
+  }
+
+  .notes li .dot {
+    margin-top: 2px;
+  }
+
+  .notes b {
+    display: block;
+  }
+
+  .notes .us-ref {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: .66rem;
+    color: var(--accent);
+    letter-spacing: .05em;
+  }
+
+  .notes p.aside {
+    font-size: .8rem;
+    color: var(--muted);
+    border-left: 3px solid var(--fill-2);
+    padding-left: .75rem;
+    margin: 1rem 0 0;
+  }
+
+  footer {
+    margin-top: 4rem;
+    border-top: 2px solid var(--ink);
+    padding-top: 1rem;
+    max-width: 62ch;
+    color: var(--muted);
+    font-size: .85rem;
+  }
+
+  @media (max-width:700px) {
+    .phone {
+      flex-basis: 100%;
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+  }
+</style>
+
+<main>
+  <header class="page">
+    <p class="eyebrow">BJour · dokumen kerja · fase 1 — ledger</p>
+    <h1>Wireframe Fase 1: Ledger local-first</h1>
+    <p>Enam layar inti sesuai PRD <span class="mono">bjour-fase-1-ledger</span>. Lo-fi dan grayscale — struktur &amp;
+      alur, bukan visual final. Anotasi biru merujuk nomor user story (US) di PRD.</p>
+  </header>
+
+  <!-- ================ 1. BERANDA ================ -->
+  <div class="sec-head"><span class="no mono">LAYAR 01</span>
+    <h2>Beranda — Daftar Harian</h2><span class="us">US 1 · 16–19 · 21–23</span>
+  </div>
+  <div class="screen">
+    <div class="phone">
+      <div class="p-title"><span class="chev">‹</span> Juli 2026 <span class="chev">›</span><span class="dot abs"
+          style="right:8px; top:14px;">1</span></div>
+      <div class="summary" style="position:relative;">
+        <div class="cell">
+          <div class="lab">Masuk</div>
+          <div class="val">8.250.000</div>
+        </div>
+        <div class="cell">
+          <div class="lab">Keluar</div>
+          <div class="val">5.780.000</div>
+        </div>
+        <div class="cell">
+          <div class="lab">Selisih</div>
+          <div class="val">+2.470.000</div>
+        </div>
+        <span class="dot abs">2</span>
+      </div>
+      <div class="prog-card">
+        <div class="ring">
+          <div class="hole">18/30</div>
+        </div>
+        <div class="grow tiny"><b>Analisismu sedang disiapkan</b><br><span class="muted">12 hari lagi menuju
+            BJour+</span></div>
+        <span class="dot abs">3</span>
+      </div>
+      <div class="group-h tiny"><span>Rab, 16 Jul</span><span class="right muted">−185.000</span><span
+          class="dot abs">4</span></div>
+      <div class="tx">
+        <div class="ico"></div>
+        <div class="grow">Makan siang<br><span class="tiny muted">Makanan · Tunai</span></div>
+        <div class="amt">−35.000</div>
+      </div>
+      <div class="tx">
+        <div class="ico"></div>
+        <div class="grow">Bensin<br><span class="tiny muted">Transportasi · E-wallet</span></div>
+        <div class="amt">−150.000</div><span class="dot abs">5</span>
+      </div>
+      <div class="group-h tiny"><span>Sel, 15 Jul</span><span class="right muted">+8.000.000</span></div>
+      <div class="tx">
+        <div class="ico"></div>
+        <div class="grow">Gaji Juli<br><span class="tiny muted">Gaji · Rekening BCA</span></div>
+        <div class="amt">+8.000.000</div>
+      </div>
+      <div class="tx">
+        <div class="ico"></div>
+        <div class="grow">Tarik tunai<br><span class="tiny muted">Transfer · BCA → Tunai</span></div>
+        <div class="amt muted">500.000</div><span class="dot abs">6</span>
+      </div>
+      <div class="fab">+<span class="dot abs">7</span></div>
+      <div class="tabbar">
+        <div class="tab on">
+          <div class="ic"></div>Harian
+        </div>
+        <div class="tab">
+          <div class="ic"></div>Kalender
+        </div>
+        <div class="tab">
+          <div class="ic"></div>Stats
+        </div>
+        <div class="tab">
+          <div class="ic"></div>Aset
+        </div>
+        <span class="dot abs" style="right:-4px; top:2px;">8</span>
+      </div>
+    </div>
+    <div class="notes">
+      <ol>
+        <li><span class="dot">1</span>
+          <div><b>Navigasi bulan</b>Mundur/maju bulan; semua tampilan (harian, kalender, stats) mengikuti bulan aktif.
+            <span class="us-ref">US21</span></div>
+        </li>
+        <li><span class="dot">2</span>
+          <div><b>Ringkasan bulanan</b>Total masuk, keluar, selisih (surplus/defisit) bulan aktif. Format rupiah di
+            seluruh app. <span class="us-ref">US19 · US22</span></div>
+        </li>
+        <li><span class="dot">3</span>
+          <div><b>Kartu Ambang Data</b>Progres menuju BJour+ — imbalan yang menjawab "untuk apa rajin mencatat". Ketuk →
+            Layar 06. <span class="us-ref">US23</span></div>
+        </li>
+        <li><span class="dot">4</span>
+          <div><b>Grup per tanggal + subtotal</b>Riwayat kronologis dikelompokkan harian. <span
+              class="us-ref">US18</span></div>
+        </li>
+        <li><span class="dot">5</span>
+          <div><b>Baris Transaction</b>Kategori (ikon), catatan, Aset, nominal. Ketuk → buka quick-entry mode edit;
+            hapus lewat situ. <span class="us-ref">US7 · US8</span></div>
+        </li>
+        <li><span class="dot">6</span>
+          <div><b>Transfer tampil netral</b>Tanpa tanda +/− — bukan pemasukan/pengeluaran, total kekayaan tak berubah.
+            <span class="us-ref">US12</span></div>
+        </li>
+        <li><span class="dot">7</span>
+          <div><b>FAB catat</b>Selalu terlihat; jalur tercepat ke quick-entry (Layar 02). <span
+              class="us-ref">US1</span></div>
+        </li>
+        <li><span class="dot">8</span>
+          <div><b>Tab bar 4 tampilan</b>Harian · Kalender · Stats · Aset.</div>
+        </li>
+      </ol>
+      <p class="aside">Kondisi pertama kali dibuka: daftar kosong berisi satu ajakan "Catat transaksi pertamamu" + FAB;
+        Aset "Tunai" dan kategori umum sudah ter-seed — tanpa signup, tanpa setup. <span class="mono">US1 · US9</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- ================ 2. QUICK-ENTRY ================ -->
+  <div class="sec-head"><span class="no mono">LAYAR 02</span>
+    <h2>Quick-Entry — catat Transaction</h2><span class="us">US 2–8</span>
+  </div>
+  <div class="screen">
+    <div class="phone">
+      <div class="p-title tiny muted">Batal <span class="grow"
+          style="text-align:center; color:var(--ink); font-size:.78rem; font-weight:600;">Catat</span> <span
+          style="visibility:hidden">Batal</span></div>
+      <div class="seg"><span>Masuk</span><span class="on">Keluar</span><span>Transfer</span><span
+          class="dot abs">1</span></div>
+      <div class="bigamt">35.000<span class="dot abs">2</span></div>
+      <div class="field"><span class="lab">Aset</span><span class="val">Tunai</span><span class="chip right">terakhir
+          dipakai</span><span class="dot abs">3</span></div>
+      <div class="field"><span class="lab">Kategori</span><span class="val">Makanan › Makan luar</span><span
+          class="dot abs">4</span></div>
+      <div class="field"><span class="lab">Tanggal</span><span class="val">Hari ini, 16 Jul</span><span
+          class="dot abs">5</span></div>
+      <div class="field"><span class="lab">Catatan</span><span class="muted">opsional…</span></div>
+      <div class="keypad">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+        <div>7</div>
+        <div>8</div>
+        <div>9</div>
+        <div class="muted">000</div>
+        <div>0</div>
+        <div class="muted">⌫</div>
+        <div class="save">Simpan<span class="dot abs">6</span></div>
+      </div>
+    </div>
+    <div class="phone" style="min-height:auto; padding-bottom:14px;">
+      <div class="p-title tiny muted">Varian: mode <b style="color:var(--ink); margin-left:4px;">Transfer</b></div>
+      <div class="seg"><span>Masuk</span><span>Keluar</span><span class="on">Transfer</span></div>
+      <div class="bigamt">500.000</div>
+      <div class="field"><span class="lab">Dari</span><span class="val">Rekening BCA</span><span
+          class="dot abs">7</span></div>
+      <div class="field"><span class="lab">Ke</span><span class="val">Tunai</span></div>
+      <div class="field"><span class="lab">Tanggal</span><span class="val">Hari ini, 16 Jul</span></div>
+      <div class="field" style="border-bottom:none;"><span class="lab">Catatan</span><span class="muted">Tarik
+          ATM</span></div>
+    </div>
+    <div class="notes">
+      <ol>
+        <li><span class="dot">1</span>
+          <div><b>Jenis dulu</b>Segmented control tiga jenis; berlaku juga saat edit (ganti jenis tanpa
+            hapus-buat-ulang). <span class="us-ref">US2–4 · US7</span></div>
+        </li>
+        <li><span class="dot">2</span>
+          <div><b>Keypad-first</b>Layar terbuka langsung di input nominal — jalur tersingkat untuk pencatatan rutin.
+            <span class="us-ref">US5</span></div>
+        </li>
+        <li><span class="dot">3</span>
+          <div><b>Aset terakhir diingat</b>Default = pilihan terakhir; ketuk untuk mengganti. <span
+              class="us-ref">US5</span></div>
+        </li>
+        <li><span class="dot">4</span>
+          <div><b>Kategori › subkategori</b>Ketuk → picker grid; subkategori opsional. <span class="us-ref">US2</span>
+          </div>
+        </li>
+        <li><span class="dot">5</span>
+          <div><b>Tanggal default hari ini</b>Bisa dimundurkan untuk transaksi terlewat; agregasi bulan lampau ikut
+            terkoreksi. <span class="us-ref">US6</span></div>
+        </li>
+        <li><span class="dot">6</span>
+          <div><b>Simpan = selesai</b>Saldo Aset langsung ter-update (double-entry). Mode edit menambahkan tombol Hapus
+            di bawah. <span class="us-ref">US11 · US8</span></div>
+        </li>
+        <li><span class="dot">7</span>
+          <div><b>Transfer: dua Aset, satu record</b>Field kategori diganti Dari/Ke; satu Transaction atomik memindahkan
+            saldo. <span class="us-ref">US4 · US12</span></div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ================ 3. KALENDER ================ -->
+  <div class="sec-head"><span class="no mono">LAYAR 03</span>
+    <h2>Kalender bulanan</h2><span class="us">US 16–17 · 21</span>
+  </div>
+  <div class="screen">
+    <div class="phone">
+      <div class="p-title"><span class="chev">‹</span> Juli 2026 <span class="chev">›</span></div>
+      <div class="cal">
+        <div class="dow">Sen</div>
+        <div class="dow">Sel</div>
+        <div class="dow">Rab</div>
+        <div class="dow">Kam</div>
+        <div class="dow">Jum</div>
+        <div class="dow">Sab</div>
+        <div class="dow">Min</div>
+        <div class="d mutedd"><span class="n">29</span></div>
+        <div class="d mutedd"><span class="n">30</span></div>
+        <div class="d"><span class="n">1</span><span class="io">−210rb</span></div>
+        <div class="d"><span class="n">2</span></div>
+        <div class="d"><span class="n">3</span><span class="io">−89rb</span></div>
+        <div class="d"><span class="n">4</span><span class="io">−45rb</span></div>
+        <div class="d"><span class="n">5</span></div>
+        <div class="d"><span class="n">6</span><span class="io">−120rb</span></div>
+        <div class="d"><span class="n">7</span><span class="io">−67rb</span></div>
+        <div class="d"><span class="n">8</span></div>
+        <div class="d"><span class="n">9</span><span class="io">−300rb</span></div>
+        <div class="d"><span class="n">10</span><span class="io">−52rb</span></div>
+        <div class="d"><span class="n">11</span><span class="io">−96rb</span></div>
+        <div class="d"><span class="n">12</span></div>
+        <div class="d"><span class="n">13</span><span class="io">−78rb</span></div>
+        <div class="d"><span class="n">14</span><span class="io">−41rb</span></div>
+        <div class="d"><span class="n">15</span><span class="io">+8jt<br>−0</span><span class="dot abs">1</span></div>
+        <div class="d sel"><span class="n">16</span><span class="io">−185rb</span><span class="dot abs">2</span></div>
+        <div class="d"><span class="n">17</span></div>
+        <div class="d"><span class="n">18</span></div>
+        <div class="d"><span class="n">19</span></div>
+        <div class="d"><span class="n">20</span></div>
+        <div class="d"><span class="n">21</span></div>
+        <div class="d"><span class="n">22</span></div>
+        <div class="d"><span class="n">23</span></div>
+        <div class="d"><span class="n">24</span></div>
+        <div class="d"><span class="n">25</span></div>
+        <div class="d"><span class="n">26</span></div>
+        <div class="d"><span class="n">27</span></div>
+        <div class="d"><span class="n">28</span></div>
+        <div class="d"><span class="n">29</span></div>
+        <div class="d"><span class="n">30</span></div>
+        <div class="d"><span class="n">31</span></div>
+      </div>
+      <div class="sheet" style="margin-top:auto;">
+        <div class="handle"></div>
+        <div class="tiny" style="font-weight:700; padding-bottom:4px;">Rab, 16 Jul <span class="muted right"
+            style="float:right;">−185.000</span></div>
+        <div class="tx">
+          <div class="ico"></div>
+          <div class="grow">Makan siang<span class="tiny muted"> · Tunai</span></div>
+          <div class="amt">−35.000</div>
+        </div>
+        <div class="tx" style="border-bottom:none;">
+          <div class="ico"></div>
+          <div class="grow">Bensin<span class="tiny muted"> · E-wallet</span></div>
+          <div class="amt">−150.000</div>
+        </div>
+        <span class="dot abs">3</span>
+      </div>
+      <div class="tabbar">
+        <div class="tab">
+          <div class="ic"></div>Harian
+        </div>
+        <div class="tab on">
+          <div class="ic"></div>Kalender
+        </div>
+        <div class="tab">
+          <div class="ic"></div>Stats
+        </div>
+        <div class="tab">
+          <div class="ic"></div>Aset
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <ol>
+        <li><span class="dot">1</span>
+          <div><b>Total in/out per tanggal</b>Sel menampilkan ringkasan angka, disingkat (rb/jt) agar muat. Pola harian
+            terlihat sekilas. <span class="us-ref">US16</span></div>
+        </li>
+        <li><span class="dot">2</span>
+          <div><b>Tanggal terpilih</b>Ketuk sebuah tanggal → sheet transaksi hari itu terbuka di bawah. <span
+              class="us-ref">US17</span></div>
+        </li>
+        <li><span class="dot">3</span>
+          <div><b>Bottom sheet harian</b>Daftar transaksi tanggal terpilih; ketuk baris → edit. Geser ke atas untuk
+            daftar penuh.</div>
+        </li>
+      </ol>
+      <p class="aside">Tanggal disimpan sebagai tanggal lokal — transaksi 31 Jan tidak pernah "bocor" ke Februari karena
+        zona waktu (keputusan PRD).</p>
+    </div>
+  </div>
+
+  <!-- ================ 4. STATS ================ -->
+  <div class="sec-head"><span class="no mono">LAYAR 04</span>
+    <h2>Statistik per kategori</h2><span class="us">US 20–22</span>
+  </div>
+  <div class="screen">
+    <div class="phone">
+      <div class="p-title"><span class="chev">‹</span> Juli 2026 <span class="chev">›</span></div>
+      <div class="seg"><span class="on">Pengeluaran</span><span>Pemasukan</span><span class="dot abs">1</span></div>
+      <div class="donut">
+        <div class="hole"><b>5,78jt</b><span class="muted">total</span></div><span class="dot abs">2</span>
+      </div>
+      <div class="legend"><span class="sw" style="background:var(--frame);"></span>
+        <div class="grow">Makanan</div><span class="muted tiny">36%</span>
+        <div class="amt" style="font-weight:600; margin-left:10px;">2.080.000</div><span class="dot abs">3</span>
+      </div>
+      <div class="legend"><span class="sw" style="background:var(--line);"></span>
+        <div class="grow">Transportasi</div><span class="muted tiny">22%</span>
+        <div style="font-weight:600; margin-left:10px;">1.270.000</div>
+      </div>
+      <div class="legend"><span class="sw" style="background:var(--fill-2);"></span>
+        <div class="grow">Tagihan</div><span class="muted tiny">22%</span>
+        <div style="font-weight:600; margin-left:10px;">1.250.000</div>
+      </div>
+      <div class="legend" style="border-bottom:none;"><span class="sw" style="background:var(--fill);"></span>
+        <div class="grow">Lainnya</div><span class="muted tiny">20%</span>
+        <div style="font-weight:600; margin-left:10px;">1.180.000</div>
+      </div>
+      <div class="tabbar">
+        <div class="tab">
+          <div class="ic"></div>Harian
+        </div>
+        <div class="tab">
+          <div class="ic"></div>Kalender
+        </div>
+        <div class="tab on">
+          <div class="ic"></div>Stats
+        </div>
+        <div class="tab">
+          <div class="ic"></div>Aset
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <ol>
+        <li><span class="dot">1</span>
+          <div><b>Arah arus</b>Default pengeluaran; pemasukan satu ketukan. Bulan mengikuti navigasi atas. <span
+              class="us-ref">US20 · US21</span></div>
+        </li>
+        <li><span class="dot">2</span>
+          <div><b>Donut per kategori</b>Total periode di tengah. Grayscale di wireframe — palet menyusul di desain
+            visual. <span class="us-ref">US20</span></div>
+        </li>
+        <li><span class="dot">3</span>
+          <div><b>Rincian legend</b>Kategori, persentase, nominal; ketuk kategori → daftar transaksinya (drill-down).
+          </div>
+        </li>
+      </ol>
+      <p class="aside">Fase 1 berhenti di pie + rincian. Deteksi anomali ("makan bulan ini melonjak") adalah wilayah
+        BJour+ — di sinilah kelemahan Money Manager dibalas, bukan di layar ini.</p>
+    </div>
+  </div>
+
+  <!-- ================ 5. ASET ================ -->
+  <div class="sec-head"><span class="no mono">LAYAR 05</span>
+    <h2>Aset &amp; saldo</h2><span class="us">US 9–15</span>
+  </div>
+  <div class="screen">
+    <div class="phone">
+      <div class="p-title">Aset</div>
+      <div class="summary" style="position:relative;">
+        <div class="cell">
+          <div class="lab">Total kekayaan</div>
+          <div class="val">14.320.000</div>
+        </div>
+        <span class="dot abs">1</span>
+      </div>
+      <div class="asset-g">Tunai &amp; rekening</div>
+      <div class="tx">
+        <div class="ico"></div>
+        <div class="grow">Tunai</div>
+        <div class="amt">1.250.000</div><span class="dot abs">2</span>
+      </div>
+      <div class="tx">
+        <div class="ico"></div>
+        <div class="grow">Rekening BCA</div>
+        <div class="amt">11.870.000</div>
+      </div>
+      <div class="asset-g">E-wallet</div>
+      <div class="tx">
+        <div class="ico"></div>
+        <div class="grow">GoPay</div>
+        <div class="amt">450.000</div>
+      </div>
+      <div class="tx" style="border-bottom:none;">
+        <div class="ico"></div>
+        <div class="grow muted">ShopeePay <span class="chip">nonaktif</span></div>
+        <div class="amt muted">750.000</div><span class="dot abs">3</span>
+      </div>
+      <div class="lockbtn" style="margin-top:8px;">+ Tambah Aset<span class="dot abs">4</span></div>
+      <div class="tabbar">
+        <div class="tab">
+          <div class="ic"></div>Harian
+        </div>
+        <div class="tab">
+          <div class="ic"></div>Kalender
+        </div>
+        <div class="tab">
+          <div class="ic"></div>Stats
+        </div>
+        <div class="tab on">
+          <div class="ic"></div>Aset
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      <ol>
+        <li><span class="dot">1</span>
+          <div><b>Total kekayaan</b>Penjumlahan saldo semua Aset aktif; saldo dihitung dari transaksi, bukan counter
+            tersimpan. <span class="us-ref">US13</span></div>
+        </li>
+        <li><span class="dot">2</span>
+          <div><b>Saldo per Aset</b>Selalu mengikuti Transaction (double-entry). Ketuk → riwayat transaksi Aset itu +
+            ubah nama/jenis. <span class="us-ref">US11 · US14</span></div>
+        </li>
+        <li><span class="dot">3</span>
+          <div><b>Nonaktif, bukan hapus</b>Aset terpakai disembunyikan dari pilihan input; riwayat utuh. Berlaku juga
+            untuk kategori. <span class="us-ref">US14 · US15</span></div>
+        </li>
+        <li><span class="dot">4</span>
+          <div><b>Tambah Aset</b>Nama, jenis (tunai/bank/e-wallet/kartu), saldo awal. <span class="us-ref">US10</span>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ================ 6. AMBANG DATA ================ -->
+  <div class="sec-head"><span class="no mono">LAYAR 06</span>
+    <h2>Ambang Data &amp; teaser BJour+</h2><span class="us">US 23–24</span>
+  </div>
+  <div class="screen">
+    <div class="phone" style="min-height:auto; padding-bottom:16px;">
+      <div class="p-title tiny muted">‹ Kembali <span class="grow"
+          style="text-align:center; color:var(--ink); font-size:.78rem; font-weight:600;">BJour+</span> <span
+          style="visibility:hidden">‹ Kembali</span></div>
+      <div style="text-align:center; padding:6px 0 2px;">
+        <div class="ring" style="width:84px; height:84px; margin:0 auto;">
+          <div class="hole" style="width:60px; height:60px; font-size:.85rem;">18/30</div>
+        </div>
+        <div style="font-weight:700; margin-top:8px;">12 hari lagi analisismu siap<span class="dot abs"
+            style="position:static; display:inline-flex; margin-left:6px;">1</span></div>
+        <div class="tiny muted" style="max-width:220px; margin:4px auto 0;">BJour+ membaca cash flow-mu dan menyusun
+          rencana keuangan — tanpa form, tanpa tebakan.</div>
+      </div>
+      <div class="check"><span class="ck done">✓</span> 30 hari pencatatan <span class="muted right">18/30</span><span
+          class="dot abs" style="position:static; margin-left:4px;">2</span></div>
+      <div class="check"><span class="ck done">✓</span> Minimal 1 pemasukan tercatat</div>
+      <div class="check"><span class="ck">·</span> Catat rutin tiap pekan <span class="muted right">3/4 pekan</span>
+      </div>
+      <div class="lockbtn" style="margin-top:10px;">🔒 BJour+ — terbuka setelah syarat terpenuhi<span
+          class="dot abs">3</span></div>
+    </div>
+    <div class="phone" style="min-height:auto; padding-bottom:16px;">
+      <div class="p-title tiny muted">Varian: <b style="color:var(--ink); margin-left:4px;">Ambang tercapai</b></div>
+      <div style="text-align:center; padding:6px 0 2px;">
+        <div class="ring" style="width:84px; height:84px; margin:0 auto; background:var(--frame);">
+          <div class="hole" style="width:60px; height:60px; font-size:.85rem;">✓</div>
+        </div>
+        <div style="font-weight:700; margin-top:8px;">Analisismu siap</div>
+        <div class="tiny muted" style="max-width:220px; margin:4px auto 0;">Sebulan cash flow terkumpul. BJour+ bisa
+          mulai membaca pola keuanganmu.</div>
+      </div>
+      <div class="ctabtn" style="margin-top:10px;">Aktifkan BJour+<span class="dot abs">4</span></div>
+      <div class="tiny muted" style="text-align:center; margin-top:6px;">Butuh akun — datamu tetap milikmu.</div>
+    </div>
+    <div class="notes">
+      <ol>
+        <li><span class="dot">1</span>
+          <div><b>Progres sebagai imbalan</b>Menjawab "untuk apa rajin mencatat" — mekanik retensi melawan kematian
+            minggu ke-3 ala Money Manager. <span class="us-ref">US23</span></div>
+        </li>
+        <li><span class="dot">2</span>
+          <div><b>Syarat Ambang Data</b>±30 hari + ≥1 pemasukan + rutin per pekan; parameter konfigurasi, dihitung lokal
+            dari Ledger.</div>
+        </li>
+        <li><span class="dot">3</span>
+          <div><b>Terkunci, bukan tersembunyi</b>BJour+ terlihat sejak awal supaya arah perjalanan jelas.</div>
+        </li>
+        <li><span class="dot">4</span>
+          <div><b>Teaser nonfungsional di fase 1</b>Ketuk → "segera hadir". Aktivasi sungguhan (akun + Life Stage +
+            Goal) adalah spec BJour+. <span class="us-ref">US24</span></div>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <footer>
+    <p><b>Catatan.</b> Wireframe lo-fi: grayscale disengaja, proporsi indikatif, bukan visual final — palet, ikon, dan
+      tipografi ditentukan saat desain UI (NativeWind). Semua logika di balik facade Ledger; layar-layar ini lapisan
+      tipis di atasnya. Sumber kebenaran: <span class="mono">.scratch/bjour-fase-1-ledger/PRD.md</span>, <span
+        class="mono">CONTEXT.md</span>, ADR-0004.</p>
+  </footer>
+</main>
