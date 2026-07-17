@@ -71,10 +71,10 @@ export default function CalendarScreen() {
                 style={{ minHeight: 52 }}>
                 <Text className="text-xs font-semibold text-ink">{cell.day}</Text>
                 {totals && totals.income > 0 && (
-                  <Text className="text-[10px] text-ink">+{formatRupiahShort(totals.income)}</Text>
+                  <Text className="text-[10px] text-ink tabular-nums">+{formatRupiahShort(totals.income)}</Text>
                 )}
                 {totals && totals.expense > 0 && (
-                  <Text className="text-[10px] text-muted">-{formatRupiahShort(totals.expense)}</Text>
+                  <Text className="text-[10px] text-muted tabular-nums">-{formatRupiahShort(totals.expense)}</Text>
                 )}
               </Pressable>
             );
@@ -84,7 +84,7 @@ export default function CalendarScreen() {
         <View className="mt-3 flex-1 overflow-hidden rounded-t-xl border-3 border-b-0 border-frame">
           <View className="flex-row justify-between bg-fill-2 px-3 py-2">
             <Text className="font-bold text-ink">{selectedDate}</Text>
-            <Text className="font-bold text-muted">{formatRupiah(selectedGroup?.subtotal ?? 0)}</Text>
+            <Text className="font-bold text-muted tabular-nums">{formatRupiah(selectedGroup?.subtotal ?? 0)}</Text>
           </View>
           <ScrollView className="bg-card">
             {selectedGroup && selectedGroup.transactions.length > 0 ? (
@@ -94,7 +94,7 @@ export default function CalendarScreen() {
                   onPress={() => router.push({ pathname: '/quick-entry', params: { id: transaction.id } })}
                   className="flex-row items-center justify-between border-b border-fill px-3 py-2">
                   <Text className="text-ink">{transactionLabel(transaction)}</Text>
-                  <Text className={`font-semibold ${transaction.kind === 'transfer' ? 'text-muted' : 'text-ink'}`}>
+                  <Text className={`font-semibold tabular-nums ${transaction.kind === 'transfer' ? 'text-muted' : 'text-ink'}`}>
                     {formatSignedAmount(transaction)}
                   </Text>
                 </Pressable>

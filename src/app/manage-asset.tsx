@@ -8,6 +8,7 @@ import { SegmentedControl } from '@/components/segmented-control';
 import { formatRupiah } from '@/domain/currency';
 import type { AssetKind } from '@/domain/types';
 import { useAmountInput } from '@/hooks/use-amount-input';
+import { useComicColors } from '@/hooks/use-comic-colors';
 import { useLedger } from '@/providers/ledger-provider';
 
 const KIND_OPTIONS: { value: AssetKind; label: string }[] = [
@@ -21,6 +22,7 @@ export default function ManageAssetScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const isEditing = typeof id === 'string';
   const ledger = useLedger();
+  const colors = useComicColors();
 
   const [name, setName] = useState('');
   const [kind, setKind] = useState<AssetKind>('cash');
@@ -83,7 +85,7 @@ export default function ManageAssetScreen() {
           value={name}
           onChangeText={setName}
           placeholder="mis. Rekening BCA"
-          placeholderTextColor="#6D6E67"
+          placeholderTextColor={colors.muted}
           className="flex-1 text-ink"
         />
       </View>
@@ -96,10 +98,10 @@ export default function ManageAssetScreen() {
       {isEditing ? (
         <View className="flex-row items-center gap-2 border-b border-fill px-4 py-3">
           <Text className="w-24 text-xs uppercase text-muted">Saldo awal</Text>
-          <Text className="font-semibold text-ink">{formatRupiah(openingBalance)}</Text>
+          <Text className="font-semibold text-ink tabular-nums">{formatRupiah(openingBalance)}</Text>
         </View>
       ) : (
-        <Text className="border-b-2 border-ink px-4 py-3 text-right font-display text-3xl font-bold text-ink">
+        <Text className="border-b-2 border-ink px-4 py-3 text-right font-display text-3xl font-bold text-ink tabular-nums">
           {formatRupiah(openingBalance)}
         </Text>
       )}

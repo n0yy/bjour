@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { SegmentedControl } from '@/components/segmented-control';
 import type { Category, CategoryGroup } from '@/domain/types';
+import { useComicColors } from '@/hooks/use-comic-colors';
 import { useLedger } from '@/providers/ledger-provider';
 
 const DIRECTION_OPTIONS: { value: Category['direction']; label: string }[] = [
@@ -79,6 +80,7 @@ function CategoryRow({
 export default function ManageCategoryScreen() {
   const params = useLocalSearchParams<{ direction?: string }>();
   const ledger = useLedger();
+  const colors = useComicColors();
 
   const [direction, setDirection] = useState<Category['direction']>(
     params.direction === 'income' ? 'income' : 'expense',
@@ -197,7 +199,7 @@ export default function ManageCategoryScreen() {
                   value={newCategoryName}
                   onChangeText={setNewCategoryName}
                   placeholder="Nama subkategori"
-                  placeholderTextColor="#6D6E67"
+                  placeholderTextColor={colors.muted}
                   className="rounded-lg border-3 border-line bg-card px-3 py-2 text-ink"
                 />
                 <Pressable onPress={addCategory} className="items-center rounded-lg bg-frame py-2">
@@ -224,7 +226,7 @@ export default function ManageCategoryScreen() {
               value={newCategoryName}
               onChangeText={setNewCategoryName}
               placeholder="Nama kategori"
-              placeholderTextColor="#6D6E67"
+              placeholderTextColor={colors.muted}
               className="rounded-lg border-3 border-line bg-card px-3 py-2 text-ink"
             />
             <Pressable onPress={addCategory} className="items-center rounded-lg bg-frame py-2">

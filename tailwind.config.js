@@ -5,15 +5,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        paper: '#F6F6F3',
-        ink: '#26272B',
-        muted: '#6D6E67',
-        fill: '#E6E6E2',
-        'fill-2': '#DDDDD8',
-        line: '#A9A9A3',
-        frame: '#4A4B46',
-        accent: '#2F5FE0',
-        card: '#FFFFFF',
+        // Resolved from CSS variables (src/global.css) so every screen using
+        // these tokens gets dark mode for free via @media (prefers-color-scheme).
+        paper: 'var(--color-paper)',
+        ink: 'var(--color-ink)',
+        muted: 'var(--color-muted)',
+        fill: 'var(--color-fill)',
+        'fill-2': 'var(--color-fill-2)',
+        line: 'var(--color-line)',
+        frame: 'var(--color-frame)',
+        accent: 'var(--color-accent)',
+        card: 'var(--color-card)',
       },
       borderWidth: {
         3: '3px',

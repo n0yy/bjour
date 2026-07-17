@@ -10,4 +10,31 @@
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
   --font-rounded: 'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif;
   --font-serif: Georgia, 'Times New Roman', serif;
+
+  /* Comic design tokens — light. Kept in sync with src/hooks/use-comic-colors.ts
+     for the handful of native props (SVG stroke, placeholderTextColor) that
+     can't consume a className. */
+  --color-paper: #F6F6F3;
+  --color-ink: #26272B;
+  --color-muted: #6D6E67;
+  --color-fill: #E6E6E2;
+  --color-fill-2: #DDDDD8;
+  --color-line: #A9A9A3;
+  --color-frame: #4A4B46;
+  --color-accent: #2F5FE0;
+  --color-card: #FFFFFF;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper: #17181B;
+    --color-ink: #E8E8E4;
+    --color-muted: #9B9C94;
+    --color-fill: #26272B;
+    --color-fill-2: #2F3035;
+    --color-line: #55564F;
+    --color-frame: #8A8B84;
+    --color-accent: #7C97F2;
+    --color-card: #1E1F23;
+  }
 }

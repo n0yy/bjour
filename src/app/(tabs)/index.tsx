@@ -71,15 +71,15 @@ export default function HomeScreen() {
           <View className="mb-3 flex-row overflow-hidden rounded-xl border-3 border-frame">
             <View className="flex-1 items-center border-r border-fill bg-card py-2">
               <Text className="text-xs uppercase text-muted">Masuk</Text>
-              <Text className="font-semibold text-ink">{formatRupiah(state.summary.income)}</Text>
+              <Text className="font-semibold text-ink tabular-nums">{formatRupiah(state.summary.income)}</Text>
             </View>
             <View className="flex-1 items-center border-r border-fill bg-card py-2">
               <Text className="text-xs uppercase text-muted">Keluar</Text>
-              <Text className="font-semibold text-ink">{formatRupiah(state.summary.expense)}</Text>
+              <Text className="font-semibold text-ink tabular-nums">{formatRupiah(state.summary.expense)}</Text>
             </View>
             <View className="flex-1 items-center bg-card py-2">
               <Text className="text-xs uppercase text-muted">Selisih</Text>
-              <Text className="font-semibold text-ink">{formatRupiah(state.summary.net)}</Text>
+              <Text className="font-semibold text-ink tabular-nums">{formatRupiah(state.summary.net)}</Text>
             </View>
           </View>
         )}
@@ -104,7 +104,7 @@ export default function HomeScreen() {
               <View className="mb-3 overflow-hidden rounded-xl border-3 border-frame">
                 <View className="flex-row justify-between bg-fill-2 px-3 py-2">
                   <Text className="font-bold text-ink">{formatDayHeader(group.date)}</Text>
-                  <Text className="font-bold text-muted">{formatRupiah(group.subtotal)}</Text>
+                  <Text className="font-bold text-muted tabular-nums">{formatRupiah(group.subtotal)}</Text>
                 </View>
                 {group.transactions.map((transaction) => {
                   const assetName = state?.assetNameById.get(transaction.assetId) ?? '—';
@@ -122,7 +122,7 @@ export default function HomeScreen() {
                         <Text className="text-ink">{transactionLabel(transaction)}</Text>
                         <Text className="text-xs text-muted">{subtitle}</Text>
                       </View>
-                      <Text className={`font-semibold ${transaction.kind === 'transfer' ? 'text-muted' : 'text-ink'}`}>
+                      <Text className={`font-semibold tabular-nums ${transaction.kind === 'transfer' ? 'text-muted' : 'text-ink'}`}>
                         {formatSignedAmount(transaction)}
                       </Text>
                     </Pressable>

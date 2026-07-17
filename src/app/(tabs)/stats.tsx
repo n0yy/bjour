@@ -9,6 +9,7 @@ import { SegmentedControl } from '@/components/segmented-control';
 import { formatRupiah } from '@/domain/currency';
 import { formatSignedAmount, transactionLabel } from '@/domain/transaction-presentation';
 import type { Category, CategoryStat, Transaction } from '@/domain/types';
+import { useCategoryPalette } from '@/hooks/use-comic-colors';
 import { useActiveMonth } from '@/providers/active-month-provider';
 import { useLedger } from '@/providers/ledger-provider';
 
@@ -20,6 +21,7 @@ const DIRECTION_OPTIONS: { value: Category['direction']; label: string }[] = [
 export default function StatsScreen() {
   const ledger = useLedger();
   const { year, month } = useActiveMonth();
+  const palette = useCategoryPalette();
   const [direction, setDirection] = useState<Category['direction']>('expense');
   const [stats, setStats] = useState<CategoryStat[]>([]);
   const [expandedCategoryId, setExpandedCategoryId] = useState<string | null>(null);
@@ -69,10 +71,10 @@ export default function StatsScreen() {
             stats.map((stat) => (
               <View key={stat.categoryId} className="border-b border-fill">
                 <Pressable onPress={() => toggleDrilldown(stat.categoryId)} className="flex-row items-center gap-2 py-2">
-                  <View className="h-3 w-3 rounded-sm" style={{ backgroundColor: categoryColor(stat.categoryId) }} />
+                  <View className="h-3 w-3 rounded-sm" style={{ backgroundColor: categoryColor(stat.categoryId, palette) }} />
                   <Text className="flex-1 text-ink">{stat.name}</Text>
                   <Text className="text-xs text-muted">{Math.round(stat.percentage)}%</Text>
-                  <Text className="ml-2 font-semibold text-ink">{formatRupiah(stat.total)}</Text>
+                  <Text className="ml-2 font-semibold text-ink tabular-nums">{formatRupiah(stat.total)}</Text>
                 </Pressable>
 
                 {expandedCategoryId === stat.categoryId && (
@@ -86,7 +88,7 @@ export default function StatsScreen() {
                           onPress={() => router.push({ pathname: '/quick-entry', params: { id: transaction.id } })}
                           className="flex-row items-center justify-between border-b border-fill-2 px-2 py-2">
                           <Text className="text-sm text-ink">{transactionLabel(transaction)}</Text>
-                          <Text className="text-sm font-semibold text-ink">{formatSignedAmount(transaction)}</Text>
+                          <Text className="text-sm font-semibold text-ink tabular-nums">{formatSignedAmount(transaction)}</Text>
                         </Pressable>
                       ))
                     )}

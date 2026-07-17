@@ -11,6 +11,7 @@ import { formatRupiah } from '@/domain/currency';
 import { todayLocalDate } from '@/domain/local-date';
 import type { AssetWithBalance, CategoryGroup, LocalDate, TransactionKind } from '@/domain/types';
 import { useAmountInput } from '@/hooks/use-amount-input';
+import { useComicColors } from '@/hooks/use-comic-colors';
 import { useLedger } from '@/providers/ledger-provider';
 
 const SEGMENTS: { value: TransactionKind; label: string }[] = [
@@ -29,6 +30,7 @@ export default function QuickEntryScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const isEditing = typeof id === 'string';
   const ledger = useLedger();
+  const colors = useComicColors();
 
   const [kind, setKind] = useState<TransactionKind>('expense');
   const { amount, setAmount, pressKey } = useAmountInput(0);
@@ -148,7 +150,7 @@ export default function QuickEntryScreen() {
 
       <SegmentedControl options={SEGMENTS} value={kind} onChange={setKind} className="mx-4" />
 
-      <Text className="border-b-2 border-ink px-4 py-3 text-right font-display text-3xl font-bold text-ink">
+      <Text className="border-b-2 border-ink px-4 py-3 text-right font-display text-3xl font-bold text-ink tabular-nums">
         {formatRupiah(amount)}
       </Text>
 
@@ -235,7 +237,7 @@ export default function QuickEntryScreen() {
           value={note}
           onChangeText={setNote}
           placeholder="opsional…"
-          placeholderTextColor="#6D6E67"
+          placeholderTextColor={colors.muted}
           className="flex-1 text-ink"
         />
       </View>

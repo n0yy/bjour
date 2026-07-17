@@ -1,6 +1,8 @@
 import { Text, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
+import { useComicColors } from '@/hooks/use-comic-colors';
+
 export function ProgressRing({
   size,
   progress,
@@ -13,6 +15,7 @@ export function ProgressRing({
   label: string;
   sublabel?: string;
 }) {
+  const colors = useComicColors();
   const stroke = Math.max(6, Math.round(size * 0.14));
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -21,12 +24,12 @@ export function ProgressRing({
   return (
     <View style={{ width: size, height: size }} className="items-center justify-center">
       <Svg width={size} height={size} style={{ position: 'absolute' }}>
-        <Circle cx={size / 2} cy={size / 2} r={radius} stroke="#E6E6E2" strokeWidth={stroke} fill="none" />
+        <Circle cx={size / 2} cy={size / 2} r={radius} stroke={colors.fill} strokeWidth={stroke} fill="none" />
         <Circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="#4A4B46"
+          stroke={colors.frame}
           strokeWidth={stroke}
           strokeDasharray={`${filled} ${circumference - filled}`}
           strokeLinecap="round"

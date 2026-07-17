@@ -69,7 +69,7 @@ export default function AssetsScreen() {
 
         <View className="mb-3 rounded-xl border-3 border-frame bg-fill-2 px-3 py-3">
           <Text className="text-xs uppercase text-muted">Total kekayaan</Text>
-          <Text className="font-display text-2xl font-bold text-ink">{formatRupiah(totalWealth)}</Text>
+          <Text className="font-display text-2xl font-bold text-ink tabular-nums">{formatRupiah(totalWealth)}</Text>
         </View>
 
         <FlatList
@@ -94,7 +94,7 @@ export default function AssetsScreen() {
                         <Text className="rounded-full bg-fill px-2 py-0.5 text-xs text-muted">nonaktif</Text>
                       )}
                     </View>
-                    <Text className="font-semibold text-ink">{formatRupiah(asset.balance)}</Text>
+                    <Text className="font-semibold text-ink tabular-nums">{formatRupiah(asset.balance)}</Text>
                   </Pressable>
                 ))}
               </View>
