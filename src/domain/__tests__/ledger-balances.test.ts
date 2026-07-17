@@ -104,7 +104,7 @@ describe('Ledger facade — income, transfer, balances', () => {
     expect(await ledger.getTotalWealth()).toBe(11_870_000 + 450_000);
   });
 
-  it('defaults the next quick-entry to the most recently used asset', async () => {
+  it('defaults the next quick-entry to the most recently used asset after an expense', async () => {
     const { ledger, storage } = makeLedger();
     await ledger.seedIfNeeded();
     const cash = await ledger.getDefaultAsset();
@@ -116,5 +116,43 @@ describe('Ledger facade — income, transfer, balances', () => {
     const nextDefault = await ledger.getDefaultAsset();
     expect(nextDefault.id).toBe(bca.id);
     expect(nextDefault.id).not.toBe(cash.id);
+  });
+
+  it('defaults the next quick-entry to the most recently used asset after an income', async () => {
+    const { ledger, storage } = makeLedger();
+    await ledger.seedIfNeeded();
+    const bca = await addAsset(storage, { id: 'bca', openingBalance: 0 });
+    const [category] = await ledger.listIncomeCategories();
+
+    await ledger.recordIncome({ amount: 8_000_000, assetId: bca.id, categoryId: category.id, date: '2026-07-15' });
+
+    expect((await ledger.getDefaultAsset()).id).toBe(bca.id);
+  });
+
+  it('defaults the next quick-entry to the source (Dari) asset after a transfer', async () => {
+    const { ledger, storage } = makeLedger();
+    await ledger.seedIfNeeded();
+    const cash = await ledger.getDefaultAsset();
+    const bca = await addAsset(storage, { id: 'bca', openingBalance: 2_000_000 });
+
+    await ledger.recordTransfer({ amount: 500_000, fromAssetId: bca.id, toAssetId: cash.id, date: '2026-07-16' });
+
+    expect((await ledger.getDefaultAsset()).id).toBe(bca.id);
+  });
+
+  it('keeps full precision for balances and total wealth in the hundreds of millions', async () => {
+    const { ledger, storage } = makeLedger();
+    await ledger.seedIfNeeded();
+    const cash = await ledger.getDefaultAsset();
+    const bca = await addAsset(storage, { id: 'bca', openingBalance: 350_000_000 });
+    const [category] = await ledger.listIncomeCategories();
+
+    await ledger.recordIncome({ amount: 275_000_000, assetId: cash.id, categoryId: category.id, date: '2026-07-15' });
+    await ledger.recordTransfer({ amount: 100_000_000, fromAssetId: bca.id, toAssetId: cash.id, date: '2026-07-16' });
+
+    const assets = await ledger.listAssets();
+    expect(assets.find((a) => a.id === bca.id)?.balance).toBe(250_000_000);
+    expect(assets.find((a) => a.id === cash.id)?.balance).toBe(375_000_000);
+    expect(await ledger.getTotalWealth()).toBe(625_000_000);
   });
 });

@@ -7,9 +7,19 @@ import { formatRupiah } from '@/domain/currency';
 import type { AssetWithBalance } from '@/domain/types';
 import { useLedger } from '@/providers/ledger-provider';
 
-const ASSET_KIND_LABEL: Record<AssetWithBalance['kind'], string> = {
-  cash: 'Tunai & rekening',
-  bank: 'Tunai & rekening',
+type AssetGroupKey = 'cash-bank' | 'e-wallet' | 'card';
+
+const GROUP_KEY_BY_ASSET_KIND: Record<AssetWithBalance['kind'], AssetGroupKey> = {
+  cash: 'cash-bank',
+  bank: 'cash-bank',
+  'e-wallet': 'e-wallet',
+  card: 'card',
+};
+
+const GROUP_ORDER: AssetGroupKey[] = ['cash-bank', 'e-wallet', 'card'];
+
+const GROUP_LABEL: Record<AssetGroupKey, string> = {
+  'cash-bank': 'Tunai & rekening',
   'e-wallet': 'E-wallet',
   card: 'Kartu',
 };
@@ -20,13 +30,15 @@ interface AssetGroup {
 }
 
 function groupByKind(assets: AssetWithBalance[]): AssetGroup[] {
-  const order = ['Tunai & rekening', 'E-wallet', 'Kartu'];
-  const groups = new Map<string, AssetWithBalance[]>();
+  const groups = new Map<AssetGroupKey, AssetWithBalance[]>();
   for (const asset of assets) {
-    const label = ASSET_KIND_LABEL[asset.kind];
-    groups.set(label, [...(groups.get(label) ?? []), asset]);
+    const key = GROUP_KEY_BY_ASSET_KIND[asset.kind];
+    groups.set(key, [...(groups.get(key) ?? []), asset]);
   }
-  return order.filter((label) => groups.has(label)).map((label) => ({ label, assets: groups.get(label)! }));
+  return GROUP_ORDER.filter((key) => groups.has(key)).map((key) => ({
+    label: GROUP_LABEL[key],
+    assets: groups.get(key)!,
+  }));
 }
 
 export default function AssetsScreen() {
