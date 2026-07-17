@@ -5,7 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { MonthNav } from '@/components/month-nav';
 import { formatRupiah } from '@/domain/currency';
-import type { DailyGroup, MonthlySummary, Transaction } from '@/domain/types';
+import { formatSignedAmount, transactionLabel } from '@/domain/transaction-presentation';
+import type { DailyGroup, MonthlySummary } from '@/domain/types';
 import { useActiveMonth } from '@/providers/active-month-provider';
 import { useLedger } from '@/providers/ledger-provider';
 
@@ -21,13 +22,6 @@ function formatDayHeader(date: string): string {
   return new Intl.DateTimeFormat('id-ID', { weekday: 'short', day: 'numeric', month: 'short' }).format(
     new Date(year, month - 1, day),
   );
-}
-
-function transactionLabel(transaction: Transaction): string {
-  if (transaction.note) return transaction.note;
-  if (transaction.kind === 'income') return 'Pemasukan';
-  if (transaction.kind === 'transfer') return 'Transfer';
-  return 'Pengeluaran';
 }
 
 export default function HomeScreen() {
@@ -112,13 +106,6 @@ export default function HomeScreen() {
                     transaction.kind === 'transfer'
                       ? `${assetName} → ${state?.assetNameById.get(transaction.toAssetId ?? '') ?? '—'}`
                       : `${state?.categoryNameById.get(transaction.categoryId ?? '') ?? '—'} · ${assetName}`;
-                  const amountText =
-                    transaction.kind === 'income'
-                      ? `+${formatRupiah(transaction.amount)}`
-                      : transaction.kind === 'expense'
-                        ? `-${formatRupiah(transaction.amount)}`
-                        : formatRupiah(transaction.amount);
-
                   return (
                     <Pressable
                       key={transaction.id}
@@ -130,7 +117,7 @@ export default function HomeScreen() {
                         <Text className="text-xs text-muted">{subtitle}</Text>
                       </View>
                       <Text className={`font-semibold ${transaction.kind === 'transfer' ? 'text-muted' : 'text-ink'}`}>
-                        {amountText}
+                        {formatSignedAmount(transaction)}
                       </Text>
                     </Pressable>
                   );

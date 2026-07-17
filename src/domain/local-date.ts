@@ -30,3 +30,25 @@ export function monthRange(year: number, month: number): { start: LocalDate; end
     end: `${year}-${pad2(month)}-${pad2(lastDayOfMonth(year, month))}`,
   };
 }
+
+export interface CalendarCell {
+  date: LocalDate;
+  day: number;
+  inMonth: boolean;
+}
+
+/** Monday-first 6x7 grid covering `month`, padded with adjacent-month days. */
+export function buildCalendarGrid(year: number, month: number): CalendarCell[] {
+  const firstOfMonth = new Date(year, month - 1, 1);
+  const mondayFirstWeekday = (firstOfMonth.getDay() + 6) % 7; // 0=Mon..6=Sun
+  const gridStart = new Date(year, month - 1, 1 - mondayFirstWeekday);
+
+  return Array.from({ length: 42 }, (_, i) => {
+    const cellDate = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + i);
+    return {
+      date: toLocalDate(cellDate),
+      day: cellDate.getDate(),
+      inMonth: cellDate.getMonth() === month - 1 && cellDate.getFullYear() === year,
+    };
+  });
+}

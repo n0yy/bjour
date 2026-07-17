@@ -5,6 +5,7 @@ import type {
   Asset,
   AssetDetailsPatch,
   AssetWithBalance,
+  CalendarDayTotal,
   Category,
   CategoryGroup,
   DailyGroup,
@@ -29,6 +30,7 @@ export interface Ledger {
   deleteTransaction(id: string): Promise<void>;
   listDailyGroups(year: number, month: number): Promise<DailyGroup[]>;
   getMonthlySummary(year: number, month: number): Promise<MonthlySummary>;
+  getCalendarTotals(year: number, month: number): Promise<CalendarDayTotal[]>;
 
   listExpenseCategories(): Promise<Category[]>;
   listIncomeCategories(): Promise<Category[]>;
@@ -248,6 +250,21 @@ export function createLedger(
       const income = transactions.filter((t) => t.kind === 'income').reduce((sum, t) => sum + t.amount, 0);
       const expense = transactions.filter((t) => t.kind === 'expense').reduce((sum, t) => sum + t.amount, 0);
       return { income, expense, net: income - expense };
+    },
+
+    async getCalendarTotals(year: number, month: number) {
+      const { start, end } = monthRange(year, month);
+      const transactions = await storage.listTransactionsByDateRange(start, end);
+
+      const byDate = new Map<string, CalendarDayTotal>();
+      for (const t of transactions) {
+        if (t.kind === 'transfer') continue;
+        const totals = byDate.get(t.date) ?? { date: t.date, income: 0, expense: 0 };
+        if (t.kind === 'income') totals.income += t.amount;
+        else totals.expense += t.amount;
+        byDate.set(t.date, totals);
+      }
+      return [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
     },
 
     // ---- Categories ----

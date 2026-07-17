@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 
-import { lastDayOfMonth, monthRange, parseLocalDate, toLocalDate, todayLocalDate } from '@/domain/local-date';
+import { buildCalendarGrid, lastDayOfMonth, monthRange, parseLocalDate, toLocalDate, todayLocalDate } from '@/domain/local-date';
 
 describe('todayLocalDate', () => {
   it('formats using the local calendar date, zero-padded', () => {
@@ -34,5 +34,23 @@ describe('toLocalDate / parseLocalDate', () => {
     const date = new Date(2026, 0, 31); // 31 January, local time
     expect(toLocalDate(date)).toBe('2026-01-31');
     expect(parseLocalDate('2026-01-31')).toEqual(date);
+  });
+});
+
+describe('buildCalendarGrid', () => {
+  it('produces a 42-cell Monday-first grid with correct in-month flags', () => {
+    // July 2026 starts on a Wednesday.
+    const grid = buildCalendarGrid(2026, 7);
+    expect(grid).toHaveLength(42);
+    expect(grid[0]).toEqual({ date: '2026-06-29', day: 29, inMonth: false });
+    expect(grid[2]).toEqual({ date: '2026-07-01', day: 1, inMonth: true });
+    expect(grid[32]).toEqual({ date: '2026-07-31', day: 31, inMonth: true });
+    expect(grid[33]).toEqual({ date: '2026-08-01', day: 1, inMonth: false });
+  });
+
+  it('starts the grid on Monday even when the month begins on Monday', () => {
+    // June 2026 starts on a Monday.
+    const grid = buildCalendarGrid(2026, 6);
+    expect(grid[0]).toEqual({ date: '2026-06-01', day: 1, inMonth: true });
   });
 });

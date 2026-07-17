@@ -100,3 +100,10 @@ export interface MonthlySummary {
   expense: number;
   net: number;
 }
+
+export interface CalendarDayTotal {
+  date: LocalDate;
+  income: number;
+  expense: number;
+}
+
