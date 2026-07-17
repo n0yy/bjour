@@ -131,5 +131,18 @@ export async function createSqliteStorage(executor: SqlExecutor): Promise<Ledger
       );
       return rows.map(transactionFromRow);
     },
+
+    async listAllTransactions() {
+      const rows = await executor.getAllAsync<TransactionRow>('SELECT * FROM transactions', []);
+      return rows.map(transactionFromRow);
+    },
+
+    async getMostRecentTransaction() {
+      const row = await executor.getFirstAsync<TransactionRow>(
+        'SELECT * FROM transactions ORDER BY created_at DESC LIMIT 1',
+        [],
+      );
+      return row ? transactionFromRow(row) : null;
+    },
   };
 }

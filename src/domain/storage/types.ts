@@ -8,6 +8,10 @@ export interface LedgerStorage {
   insertTransaction(transaction: Transaction): Promise<void>;
   /** Inclusive on both ends. */
   listTransactionsByDateRange(start: LocalDate, end: LocalDate): Promise<Transaction[]>;
+  /** All transactions ever recorded — used to compute asset balances and total wealth. */
+  listAllTransactions(): Promise<Transaction[]>;
+  /** Most recently created transaction, or null if none exist yet. */
+  getMostRecentTransaction(): Promise<Transaction | null>;
 }
 
 /**

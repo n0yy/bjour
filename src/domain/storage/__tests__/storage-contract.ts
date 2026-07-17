@@ -152,4 +152,39 @@ export function runStorageContractTests(createStorage: () => Promise<LedgerStora
       expect(transaction.categoryId).toBeNull();
     });
   });
+
+  describe('listAllTransactions', () => {
+    it('returns every transaction regardless of date, unlike listTransactionsByDateRange', async () => {
+      const storage = await createStorage();
+      await storage.insertAsset(makeAsset());
+      await storage.insertCategory(makeCategory());
+      await storage.insertTransaction(makeTransaction({ id: 'tx-old', date: '2020-01-01' }));
+      await storage.insertTransaction(makeTransaction({ id: 'tx-new', date: '2026-07-16' }));
+
+      const all = await storage.listAllTransactions();
+      expect(all.map((t) => t.id).sort()).toEqual(['tx-new', 'tx-old']);
+    });
+  });
+
+  describe('getMostRecentTransaction', () => {
+    it('returns null when no transactions exist', async () => {
+      const storage = await createStorage();
+      expect(await storage.getMostRecentTransaction()).toBeNull();
+    });
+
+    it('returns the transaction with the latest createdAt, not the latest date', async () => {
+      const storage = await createStorage();
+      await storage.insertAsset(makeAsset());
+      await storage.insertCategory(makeCategory());
+      await storage.insertTransaction(
+        makeTransaction({ id: 'tx-earlier-created', date: '2026-07-20', createdAt: '2026-07-16T09:00:00.000Z' }),
+      );
+      await storage.insertTransaction(
+        makeTransaction({ id: 'tx-later-created', date: '2026-07-01', createdAt: '2026-07-16T10:00:00.000Z' }),
+      );
+
+      const mostRecent = await storage.getMostRecentTransaction();
+      expect(mostRecent?.id).toBe('tx-later-created');
+    });
+  });
 }

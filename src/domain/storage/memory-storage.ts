@@ -26,5 +26,12 @@ export function createMemoryStorage(): LedgerStorage {
     async listTransactionsByDateRange(start: LocalDate, end: LocalDate) {
       return transactions.filter((t) => t.date >= start && t.date <= end);
     },
+    async listAllTransactions() {
+      return [...transactions];
+    },
+    async getMostRecentTransaction() {
+      if (transactions.length === 0) return null;
+      return transactions.reduce((latest, t) => (t.createdAt > latest.createdAt ? t : latest));
+    },
   };
 }

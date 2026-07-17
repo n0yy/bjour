@@ -4,13 +4,13 @@ import { FlatList, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { formatRupiah } from '@/domain/currency';
-import type { DailyGroup } from '@/domain/types';
+import type { DailyGroup, Transaction } from '@/domain/types';
 import { useLedger } from '@/providers/ledger-provider';
 
 interface HomeState {
   groups: DailyGroup[];
   categoryNameById: Map<string, string>;
-  assetName: string;
+  assetNameById: Map<string, string>;
 }
 
 function formatDayHeader(date: string): string {
@@ -18,6 +18,13 @@ function formatDayHeader(date: string): string {
   return new Intl.DateTimeFormat('id-ID', { weekday: 'short', day: 'numeric', month: 'short' }).format(
     new Date(year, month - 1, day),
   );
+}
+
+function transactionLabel(transaction: Transaction): string {
+  if (transaction.note) return transaction.note;
+  if (transaction.kind === 'income') return 'Pemasukan';
+  if (transaction.kind === 'transfer') return 'Transfer';
+  return 'Pengeluaran';
 }
 
 export default function HomeScreen() {
@@ -31,13 +38,14 @@ export default function HomeScreen() {
     Promise.all([
       ledger.listDailyGroups(now.getFullYear(), now.getMonth() + 1),
       ledger.listExpenseCategories(),
-      ledger.getDefaultAsset(),
-    ]).then(([groups, categories, asset]) => {
+      ledger.listIncomeCategories(),
+      ledger.listAssets(),
+    ]).then(([groups, expenseCategories, incomeCategories, assets]) => {
       if (cancelled) return;
       setState({
         groups,
-        categoryNameById: new Map(categories.map((c) => [c.id, c.name])),
-        assetName: asset.name,
+        categoryNameById: new Map([...expenseCategories, ...incomeCategories].map((c) => [c.id, c.name])),
+        assetNameById: new Map(assets.map((a) => [a.id, a.name])),
       });
     });
 
@@ -78,18 +86,32 @@ export default function HomeScreen() {
                   <Text className="font-bold text-ink">{formatDayHeader(group.date)}</Text>
                   <Text className="font-bold text-muted">{formatRupiah(group.subtotal)}</Text>
                 </View>
-                {group.transactions.map((transaction) => (
-                  <View key={transaction.id} className="flex-row items-center gap-3 border-b border-fill bg-card px-3 py-2">
-                    <View className="h-7 w-7 rounded-md bg-fill" />
-                    <View className="flex-1">
-                      <Text className="text-ink">{transaction.note || 'Pengeluaran'}</Text>
-                      <Text className="text-xs text-muted">
-                        {state?.categoryNameById.get(transaction.categoryId ?? '') ?? '—'} · {state?.assetName}
+                {group.transactions.map((transaction) => {
+                  const assetName = state?.assetNameById.get(transaction.assetId) ?? '—';
+                  const subtitle =
+                    transaction.kind === 'transfer'
+                      ? `${assetName} → ${state?.assetNameById.get(transaction.toAssetId ?? '') ?? '—'}`
+                      : `${state?.categoryNameById.get(transaction.categoryId ?? '') ?? '—'} · ${assetName}`;
+                  const amountText =
+                    transaction.kind === 'income'
+                      ? `+${formatRupiah(transaction.amount)}`
+                      : transaction.kind === 'expense'
+                        ? `-${formatRupiah(transaction.amount)}`
+                        : formatRupiah(transaction.amount);
+
+                  return (
+                    <View key={transaction.id} className="flex-row items-center gap-3 border-b border-fill bg-card px-3 py-2">
+                      <View className="h-7 w-7 rounded-md bg-fill" />
+                      <View className="flex-1">
+                        <Text className="text-ink">{transactionLabel(transaction)}</Text>
+                        <Text className="text-xs text-muted">{subtitle}</Text>
+                      </View>
+                      <Text className={`font-semibold ${transaction.kind === 'transfer' ? 'text-muted' : 'text-ink'}`}>
+                        {amountText}
                       </Text>
                     </View>
-                    <Text className="font-semibold text-ink">-{formatRupiah(transaction.amount)}</Text>
-                  </View>
-                ))}
+                  );
+                })}
               </View>
             )}
           />

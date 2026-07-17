@@ -42,6 +42,26 @@ export type NewExpenseInput = {
   note?: string | null;
 };
 
+export type NewIncomeInput = {
+  amount: number;
+  assetId: string;
+  categoryId: string;
+  date: LocalDate;
+  note?: string | null;
+};
+
+export type NewTransferInput = {
+  amount: number;
+  fromAssetId: string;
+  toAssetId: string;
+  date: LocalDate;
+  note?: string | null;
+};
+
+export interface AssetWithBalance extends Asset {
+  balance: number;
+}
+
 export interface DailyGroup {
   date: LocalDate;
   subtotal: number;

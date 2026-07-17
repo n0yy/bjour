@@ -1,3 +1,4 @@
+import * as Crypto from 'expo-crypto';
 import * as SQLite from 'expo-sqlite';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
@@ -16,7 +17,7 @@ export function LedgerProvider({ children }: { children: ReactNode }) {
     async function init() {
       const db = await SQLite.openDatabaseAsync('bjour.db');
       const storage = await createSqliteStorage(createExpoSqlExecutor(db));
-      const instance = createLedger(storage);
+      const instance = createLedger(storage, () => new Date().toISOString(), () => Crypto.randomUUID());
       await instance.seedIfNeeded();
       if (!cancelled) {
         setLedger(instance);
