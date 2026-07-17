@@ -3,12 +3,15 @@ import { useCallback, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { MonthNav } from '@/components/month-nav';
 import { formatRupiah } from '@/domain/currency';
-import type { DailyGroup, Transaction } from '@/domain/types';
+import type { DailyGroup, MonthlySummary, Transaction } from '@/domain/types';
+import { useActiveMonth } from '@/providers/active-month-provider';
 import { useLedger } from '@/providers/ledger-provider';
 
 interface HomeState {
   groups: DailyGroup[];
+  summary: MonthlySummary;
   categoryNameById: Map<string, string>;
   assetNameById: Map<string, string>;
 }
@@ -29,21 +32,23 @@ function transactionLabel(transaction: Transaction): string {
 
 export default function HomeScreen() {
   const ledger = useLedger();
+  const { year, month } = useActiveMonth();
   const [state, setState] = useState<HomeState | null>(null);
 
   const load = useCallback(() => {
     let cancelled = false;
-    const now = new Date();
 
     Promise.all([
-      ledger.listDailyGroups(now.getFullYear(), now.getMonth() + 1),
+      ledger.listDailyGroups(year, month),
+      ledger.getMonthlySummary(year, month),
       ledger.listExpenseCategories(),
       ledger.listIncomeCategories(),
       ledger.listAssets(),
-    ]).then(([groups, expenseCategories, incomeCategories, assets]) => {
+    ]).then(([groups, summary, expenseCategories, incomeCategories, assets]) => {
       if (cancelled) return;
       setState({
         groups,
+        summary,
         categoryNameById: new Map([...expenseCategories, ...incomeCategories].map((c) => [c.id, c.name])),
         assetNameById: new Map(assets.map((a) => [a.id, a.name])),
       });
@@ -52,7 +57,7 @@ export default function HomeScreen() {
     return () => {
       cancelled = true;
     };
-  }, [ledger]);
+  }, [ledger, year, month]);
 
   useFocusEffect(load);
 
@@ -62,9 +67,24 @@ export default function HomeScreen() {
   return (
     <SafeAreaView className="flex-1 bg-paper" edges={['top', 'left', 'right']}>
       <View className="flex-1 px-4 pt-2">
-        <Text className="mb-3 text-center font-display text-lg font-bold text-ink">
-          {new Intl.DateTimeFormat('id-ID', { month: 'long', year: 'numeric' }).format(new Date())}
-        </Text>
+        <MonthNav />
+
+        {state && (
+          <View className="mb-3 flex-row overflow-hidden rounded-xl border-3 border-frame">
+            <View className="flex-1 items-center border-r border-fill bg-card py-2">
+              <Text className="text-xs uppercase text-muted">Masuk</Text>
+              <Text className="font-semibold text-ink">{formatRupiah(state.summary.income)}</Text>
+            </View>
+            <View className="flex-1 items-center border-r border-fill bg-card py-2">
+              <Text className="text-xs uppercase text-muted">Keluar</Text>
+              <Text className="font-semibold text-ink">{formatRupiah(state.summary.expense)}</Text>
+            </View>
+            <View className="flex-1 items-center bg-card py-2">
+              <Text className="text-xs uppercase text-muted">Selisih</Text>
+              <Text className="font-semibold text-ink">{formatRupiah(state.summary.net)}</Text>
+            </View>
+          </View>
+        )}
 
         {isEmpty ? (
           <View className="flex-1 items-center justify-center gap-4 pb-20">

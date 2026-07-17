@@ -8,6 +8,7 @@ import type {
   Category,
   CategoryGroup,
   DailyGroup,
+  MonthlySummary,
   NewAssetInput,
   NewCategoryInput,
   NewExpenseInput,
@@ -27,6 +28,7 @@ export interface Ledger {
   updateTransaction(id: string, input: TransactionEditInput): Promise<Transaction>;
   deleteTransaction(id: string): Promise<void>;
   listDailyGroups(year: number, month: number): Promise<DailyGroup[]>;
+  getMonthlySummary(year: number, month: number): Promise<MonthlySummary>;
 
   listExpenseCategories(): Promise<Category[]>;
   listIncomeCategories(): Promise<Category[]>;
@@ -238,6 +240,14 @@ export function createLedger(
       }));
 
       return groups.sort((a, b) => b.date.localeCompare(a.date));
+    },
+
+    async getMonthlySummary(year: number, month: number) {
+      const { start, end } = monthRange(year, month);
+      const transactions = await storage.listTransactionsByDateRange(start, end);
+      const income = transactions.filter((t) => t.kind === 'income').reduce((sum, t) => sum + t.amount, 0);
+      const expense = transactions.filter((t) => t.kind === 'expense').reduce((sum, t) => sum + t.amount, 0);
+      return { income, expense, net: income - expense };
     },
 
     // ---- Categories ----

@@ -94,3 +94,9 @@ export interface DailyGroup {
   subtotal: number;
   transactions: Transaction[];
 }
+
+export interface MonthlySummary {
+  income: number;
+  expense: number;
+  net: number;
+}
