@@ -16,6 +16,7 @@ export default function RootLayout() {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="quick-entry" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="manage-asset" options={{ presentation: 'modal' }} />
         </Stack>
       </LedgerProvider>
     </ThemeProvider>

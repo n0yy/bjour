@@ -43,12 +43,15 @@ export default function QuickEntryScreen() {
   // The user's explicit "Ke" pick, if any and still valid — falls back below
   // to any other asset so it's never null/equal-to-primary after a kind switch.
   const [secondaryAssetIdOverride, setSecondaryAssetIdOverride] = useState<string | null>(null);
+  // Deactivated assets disappear from the picker, except one this transaction
+  // already used — an old entry stays editable even after its asset is retired.
+  const pickableAssets = assets.filter((a) => a.active || a.id === primaryAssetId || a.id === secondaryAssetIdOverride);
   const secondaryAssetId =
     secondaryAssetIdOverride &&
     secondaryAssetIdOverride !== primaryAssetId &&
-    assets.some((a) => a.id === secondaryAssetIdOverride)
+    pickableAssets.some((a) => a.id === secondaryAssetIdOverride)
       ? secondaryAssetIdOverride
-      : (assets.find((a) => a.id !== primaryAssetId)?.id ?? null);
+      : (pickableAssets.find((a) => a.id !== primaryAssetId)?.id ?? null);
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState<string | null>(null);
@@ -137,7 +140,7 @@ export default function QuickEntryScreen() {
           <View className="flex-row items-center gap-2 border-b border-fill px-4 py-2">
             <Text className="w-16 text-xs uppercase text-muted">Dari</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {assets.map((asset) => (
+              {pickableAssets.map((asset) => (
                 <Chip
                   key={asset.id}
                   label={asset.name}
@@ -150,7 +153,7 @@ export default function QuickEntryScreen() {
           <View className="flex-row items-center gap-2 border-b border-fill px-4 py-2">
             <Text className="w-16 text-xs uppercase text-muted">Ke</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {assets.map((asset) => (
+              {pickableAssets.map((asset) => (
                 <Chip
                   key={asset.id}
                   label={asset.name}
@@ -169,7 +172,7 @@ export default function QuickEntryScreen() {
           <View className="flex-row items-center gap-2 border-b border-fill px-4 py-2">
             <Text className="w-16 text-xs uppercase text-muted">Aset</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {assets.map((asset) => (
+              {pickableAssets.map((asset) => (
                 <Chip
                   key={asset.id}
                   label={asset.name}

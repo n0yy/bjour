@@ -1,6 +1,6 @@
-import { useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { formatRupiah } from '@/domain/currency';
@@ -82,8 +82,9 @@ export default function AssetsScreen() {
               </Text>
               <View className="overflow-hidden rounded-xl border-3 border-frame">
                 {group.assets.map((asset) => (
-                  <View
+                  <Pressable
                     key={asset.id}
+                    onPress={() => router.push({ pathname: '/manage-asset', params: { id: asset.id } })}
                     className={`flex-row items-center justify-between border-b border-fill bg-card px-3 py-3 ${
                       asset.active ? '' : 'opacity-50'
                     }`}>
@@ -94,12 +95,18 @@ export default function AssetsScreen() {
                       )}
                     </View>
                     <Text className="font-semibold text-ink">{formatRupiah(asset.balance)}</Text>
-                  </View>
+                  </Pressable>
                 ))}
               </View>
             </View>
           )}
         />
+
+        <Pressable
+          onPress={() => router.push('/manage-asset')}
+          className="mb-4 items-center rounded-xl border-3 border-dashed border-line py-3">
+          <Text className="font-bold text-muted">+ Tambah Aset</Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
