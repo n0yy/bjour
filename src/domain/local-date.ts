@@ -20,6 +20,12 @@ export function parseLocalDate(date: LocalDate): Date {
   return new Date(year, month - 1, day);
 }
 
+/** Whole days from `start` to `end` (inclusive of both endpoints, so the same date is 1 day). */
+export function daysBetweenInclusive(start: LocalDate, end: LocalDate): number {
+  const ms = parseLocalDate(end).getTime() - parseLocalDate(start).getTime();
+  return Math.floor(ms / 86_400_000) + 1;
+}
+
 export function lastDayOfMonth(year: number, month: number): number {
   return new Date(Date.UTC(year, month, 0)).getUTCDate();
 }

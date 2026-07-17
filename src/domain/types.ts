@@ -113,3 +113,20 @@ export interface CategoryStat {
   total: number;
   percentage: number;
 }
+
+export interface AmbangDataConfig {
+  requiredDays: number;
+  minIncomeCount: number;
+  /** Fraction (0-1) of elapsed weeks since the first transaction that must have at least one entry. */
+  minActiveWeekRatio: number;
+}
+
+export interface AmbangDataStatus {
+  daysSinceFirstTransaction: number;
+  requiredDays: number;
+  hasMinIncome: boolean;
+  weeksWithActivity: number;
+  totalWeeksElapsed: number;
+  hasRegularActivity: boolean;
+  isMet: boolean;
+}

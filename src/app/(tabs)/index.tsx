@@ -3,16 +3,18 @@ import { useCallback, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { AmbangDataCard } from '@/components/ambang-data-card';
 import { MonthNav } from '@/components/month-nav';
 import { formatRupiah } from '@/domain/currency';
 import { formatSignedAmount, transactionLabel } from '@/domain/transaction-presentation';
-import type { DailyGroup, MonthlySummary } from '@/domain/types';
+import type { AmbangDataStatus, DailyGroup, MonthlySummary } from '@/domain/types';
 import { useActiveMonth } from '@/providers/active-month-provider';
 import { useLedger } from '@/providers/ledger-provider';
 
 interface HomeState {
   groups: DailyGroup[];
   summary: MonthlySummary;
+  ambangData: AmbangDataStatus;
   categoryNameById: Map<string, string>;
   assetNameById: Map<string, string>;
 }
@@ -35,14 +37,16 @@ export default function HomeScreen() {
     Promise.all([
       ledger.listDailyGroups(year, month),
       ledger.getMonthlySummary(year, month),
+      ledger.getAmbangDataStatus(),
       ledger.listExpenseCategories(),
       ledger.listIncomeCategories(),
       ledger.listAssets(),
-    ]).then(([groups, summary, expenseCategories, incomeCategories, assets]) => {
+    ]).then(([groups, summary, ambangData, expenseCategories, incomeCategories, assets]) => {
       if (cancelled) return;
       setState({
         groups,
         summary,
+        ambangData,
         categoryNameById: new Map([...expenseCategories, ...incomeCategories].map((c) => [c.id, c.name])),
         assetNameById: new Map(assets.map((a) => [a.id, a.name])),
       });
@@ -79,6 +83,8 @@ export default function HomeScreen() {
             </View>
           </View>
         )}
+
+        {state && <AmbangDataCard status={state.ambangData} onPress={() => router.push('/bjour-plus')} />}
 
         {isEmpty ? (
           <View className="flex-1 items-center justify-center gap-4 pb-20">

@@ -1,7 +1,9 @@
-import { monthRange } from './local-date';
+import { daysBetweenInclusive, monthRange, todayLocalDate } from './local-date';
 import { seedIfEmpty } from './seed';
 import type { LedgerStorage } from './storage/types';
 import type {
+  AmbangDataConfig,
+  AmbangDataStatus,
   Asset,
   AssetDetailsPatch,
   AssetWithBalance,
@@ -20,6 +22,12 @@ import type {
   TransactionEditInput,
 } from './types';
 
+export const DEFAULT_AMBANG_DATA_CONFIG: AmbangDataConfig = {
+  requiredDays: 30,
+  minIncomeCount: 1,
+  minActiveWeekRatio: 0.75,
+};
+
 export interface Ledger {
   seedIfNeeded(): Promise<void>;
 
@@ -34,6 +42,7 @@ export interface Ledger {
   getCalendarTotals(year: number, month: number): Promise<CalendarDayTotal[]>;
   getCategoryStats(year: number, month: number, direction: Category['direction']): Promise<CategoryStat[]>;
   listTransactionsForCategory(year: number, month: number, categoryId: string): Promise<Transaction[]>;
+  getAmbangDataStatus(config?: AmbangDataConfig): Promise<AmbangDataStatus>;
 
   listExpenseCategories(): Promise<Category[]>;
   listIncomeCategories(): Promise<Category[]>;
@@ -306,6 +315,44 @@ export function createLedger(
       return transactions
         .filter((t) => t.categoryId === categoryId || (t.categoryId !== null && childIds.has(t.categoryId)))
         .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    },
+
+    async getAmbangDataStatus(config: AmbangDataConfig = DEFAULT_AMBANG_DATA_CONFIG) {
+      const transactions = await storage.listAllTransactions();
+
+      if (transactions.length === 0) {
+        return {
+          daysSinceFirstTransaction: 0,
+          requiredDays: config.requiredDays,
+          hasMinIncome: false,
+          weeksWithActivity: 0,
+          totalWeeksElapsed: 0,
+          hasRegularActivity: false,
+          isMet: false,
+        };
+      }
+
+      const firstDate = transactions.map((t) => t.date).sort()[0];
+      const today = todayLocalDate(() => new Date(now()));
+      const daysSinceFirstTransaction = daysBetweenInclusive(firstDate, today);
+
+      const hasMinIncome = transactions.filter((t) => t.kind === 'income').length >= config.minIncomeCount;
+
+      const totalWeeksElapsed = Math.ceil(daysSinceFirstTransaction / 7);
+      const activeWeeks = new Set(transactions.map((t) => Math.floor((daysBetweenInclusive(firstDate, t.date) - 1) / 7)));
+      const weeksWithActivity = activeWeeks.size;
+      const hasRegularActivity =
+        totalWeeksElapsed === 0 || weeksWithActivity / totalWeeksElapsed >= config.minActiveWeekRatio;
+
+      return {
+        daysSinceFirstTransaction,
+        requiredDays: config.requiredDays,
+        hasMinIncome,
+        weeksWithActivity,
+        totalWeeksElapsed,
+        hasRegularActivity,
+        isMet: daysSinceFirstTransaction >= config.requiredDays && hasMinIncome && hasRegularActivity,
+      };
     },
 
     // ---- Categories ----

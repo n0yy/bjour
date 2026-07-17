@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'bun:test';
 
-import { buildCalendarGrid, lastDayOfMonth, monthRange, parseLocalDate, toLocalDate, todayLocalDate } from '@/domain/local-date';
+import {
+  buildCalendarGrid,
+  daysBetweenInclusive,
+  lastDayOfMonth,
+  monthRange,
+  parseLocalDate,
+  toLocalDate,
+  todayLocalDate,
+} from '@/domain/local-date';
 
 describe('todayLocalDate', () => {
   it('formats using the local calendar date, zero-padded', () => {
@@ -34,6 +42,20 @@ describe('toLocalDate / parseLocalDate', () => {
     const date = new Date(2026, 0, 31); // 31 January, local time
     expect(toLocalDate(date)).toBe('2026-01-31');
     expect(parseLocalDate('2026-01-31')).toEqual(date);
+  });
+});
+
+describe('daysBetweenInclusive', () => {
+  it('counts the same date as 1 day', () => {
+    expect(daysBetweenInclusive('2026-07-16', '2026-07-16')).toBe(1);
+  });
+
+  it('counts consecutive days correctly', () => {
+    expect(daysBetweenInclusive('2026-07-01', '2026-07-31')).toBe(31);
+  });
+
+  it('spans a month boundary correctly', () => {
+    expect(daysBetweenInclusive('2026-01-31', '2026-02-01')).toBe(2);
   });
 });
 
