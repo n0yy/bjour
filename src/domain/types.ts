@@ -107,3 +107,9 @@ export interface CalendarDayTotal {
   expense: number;
 }
 
+export interface CategoryStat {
+  categoryId: string;
+  name: string;
+  total: number;
+  percentage: number;
+}

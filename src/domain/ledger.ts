@@ -8,6 +8,7 @@ import type {
   CalendarDayTotal,
   Category,
   CategoryGroup,
+  CategoryStat,
   DailyGroup,
   MonthlySummary,
   NewAssetInput,
@@ -31,6 +32,8 @@ export interface Ledger {
   listDailyGroups(year: number, month: number): Promise<DailyGroup[]>;
   getMonthlySummary(year: number, month: number): Promise<MonthlySummary>;
   getCalendarTotals(year: number, month: number): Promise<CalendarDayTotal[]>;
+  getCategoryStats(year: number, month: number, direction: Category['direction']): Promise<CategoryStat[]>;
+  listTransactionsForCategory(year: number, month: number, categoryId: string): Promise<Transaction[]>;
 
   listExpenseCategories(): Promise<Category[]>;
   listIncomeCategories(): Promise<Category[]>;
@@ -265,6 +268,44 @@ export function createLedger(
         byDate.set(t.date, totals);
       }
       return [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
+    },
+
+    async getCategoryStats(year: number, month: number, direction: Category['direction']) {
+      const { start, end } = monthRange(year, month);
+      const [transactions, categories] = await Promise.all([
+        storage.listTransactionsByDateRange(start, end),
+        storage.listCategories(),
+      ]);
+      const categoryById = new Map(categories.map((c) => [c.id, c]));
+      const topLevelId = (categoryId: string): string => categoryById.get(categoryId)?.parentId ?? categoryId;
+
+      const totals = new Map<string, number>();
+      for (const t of transactions) {
+        if (t.kind !== direction || !t.categoryId) continue;
+        const topId = topLevelId(t.categoryId);
+        totals.set(topId, (totals.get(topId) ?? 0) + t.amount);
+      }
+
+      const grandTotal = [...totals.values()].reduce((sum, v) => sum + v, 0);
+      const stats: CategoryStat[] = [...totals.entries()].map(([categoryId, total]) => ({
+        categoryId,
+        name: categoryById.get(categoryId)?.name ?? categoryId,
+        total,
+        percentage: grandTotal > 0 ? (total / grandTotal) * 100 : 0,
+      }));
+      return stats.sort((a, b) => b.total - a.total);
+    },
+
+    async listTransactionsForCategory(year: number, month: number, categoryId: string) {
+      const { start, end } = monthRange(year, month);
+      const [transactions, categories] = await Promise.all([
+        storage.listTransactionsByDateRange(start, end),
+        storage.listCategories(),
+      ]);
+      const childIds = new Set(categories.filter((c) => c.parentId === categoryId).map((c) => c.id));
+      return transactions
+        .filter((t) => t.categoryId === categoryId || (t.categoryId !== null && childIds.has(t.categoryId)))
+        .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     },
 
     // ---- Categories ----
