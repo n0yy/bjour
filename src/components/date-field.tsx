@@ -24,11 +24,11 @@ export function DateField({ value, onChange }: { value: LocalDate; onChange: (da
   }
 
   return (
-    <View className="flex-row items-center gap-2 border-b border-fill px-4 py-2">
-      <Text className="w-16 text-xs uppercase text-muted">Tanggal</Text>
+    <View className="flex-row items-center gap-xs border-b border-fill px-md py-xs">
+      <Text className="w-16 text-caption-uppercase text-muted">Tanggal</Text>
       {Platform.OS === 'android' ? (
         <Pressable onPress={open}>
-          <Text className="font-semibold text-ink">{formatDisplayDate(value)}</Text>
+          <Text className="text-title-sm font-semibold text-ink">{formatDisplayDate(value)}</Text>
         </Pressable>
       ) : (
         <DateTimePicker

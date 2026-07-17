@@ -47,7 +47,7 @@ export function CategoryDonut({ stats, total }: { stats: CategoryStat[]; total: 
   const segments = buildSegments(stats, palette);
 
   return (
-    <View className="items-center justify-center py-3" style={{ width: SIZE, height: SIZE, alignSelf: 'center' }}>
+    <View className="items-center justify-center py-sm" style={{ width: SIZE, height: SIZE, alignSelf: 'center' }}>
       <Svg width={SIZE} height={SIZE} style={{ position: 'absolute' }}>
         {segments.length === 0 ? (
           <Circle cx={SIZE / 2} cy={SIZE / 2} r={RADIUS} stroke={colors.fill} strokeWidth={STROKE} fill="none" />
@@ -69,8 +69,8 @@ export function CategoryDonut({ stats, total }: { stats: CategoryStat[]; total: 
           ))
         )}
       </Svg>
-      <Text className="font-display text-lg font-bold text-ink tabular-nums">{formatRupiahShort(total)}</Text>
-      <Text className="text-xs text-muted">total</Text>
+      <Text className="font-display text-title-md font-bold text-ink tabular-nums">{formatRupiahShort(total)}</Text>
+      <Text className="text-caption text-muted">total</Text>
     </View>
   );
 }

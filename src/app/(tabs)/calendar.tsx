@@ -48,12 +48,12 @@ export default function CalendarScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-paper" edges={['top', 'left', 'right']}>
-      <View className="flex-1 px-4 pt-2">
+      <View className="flex-1 px-md pt-xs">
         <MonthNav />
 
         <View className="flex-row">
           {DOW_LABELS.map((label) => (
-            <Text key={label} className="flex-1 text-center text-xs text-muted">
+            <Text key={label} className="flex-1 text-center text-caption text-muted">
               {label}
             </Text>
           ))}
@@ -67,9 +67,9 @@ export default function CalendarScreen() {
               <Pressable
                 key={cell.date}
                 onPress={() => setSelectedDateOverride(cell.date)}
-                className={`w-[14.28%] border p-1 ${isSelected ? 'border-frame border-2' : 'border-fill'} ${cell.inMonth ? '' : 'opacity-35'}`}
+                className={`w-[14.28%] border p-xxs ${isSelected ? 'border-frame border-2' : 'border-fill'} ${cell.inMonth ? '' : 'opacity-35'}`}
                 style={{ minHeight: 52 }}>
-                <Text className="text-xs font-semibold text-ink">{cell.day}</Text>
+                <Text className="text-caption font-semibold text-ink">{cell.day}</Text>
                 {totals && totals.income > 0 && (
                   <Text className="text-[10px] text-ink tabular-nums">+{formatRupiahShort(totals.income)}</Text>
                 )}
@@ -81,10 +81,10 @@ export default function CalendarScreen() {
           })}
         </View>
 
-        <View className="mt-3 flex-1 overflow-hidden rounded-t-xl border-3 border-b-0 border-frame">
-          <View className="flex-row justify-between bg-fill-2 px-3 py-2">
-            <Text className="font-bold text-ink">{selectedDate}</Text>
-            <Text className="font-bold text-muted tabular-nums">{formatRupiah(selectedGroup?.subtotal ?? 0)}</Text>
+        <View className="mt-sm flex-1 overflow-hidden rounded-t-lg border-3 border-b-0 border-frame">
+          <View className="flex-row justify-between bg-fill-2 px-sm py-xs">
+            <Text className="text-title-sm font-bold text-ink">{selectedDate}</Text>
+            <Text className="text-title-sm font-bold text-muted tabular-nums">{formatRupiah(selectedGroup?.subtotal ?? 0)}</Text>
           </View>
           <ScrollView className="bg-card">
             {selectedGroup && selectedGroup.transactions.length > 0 ? (
@@ -92,15 +92,15 @@ export default function CalendarScreen() {
                 <Pressable
                   key={transaction.id}
                   onPress={() => router.push({ pathname: '/quick-entry', params: { id: transaction.id } })}
-                  className="flex-row items-center justify-between border-b border-fill px-3 py-2">
-                  <Text className="text-ink">{transactionLabel(transaction)}</Text>
-                  <Text className={`font-semibold tabular-nums ${transaction.kind === 'transfer' ? 'text-muted' : 'text-ink'}`}>
+                  className="flex-row items-center justify-between border-b border-fill px-sm py-xs">
+                  <Text className="text-body-md text-ink">{transactionLabel(transaction)}</Text>
+                  <Text className={`text-title-sm font-semibold tabular-nums ${transaction.kind === 'transfer' ? 'text-muted' : 'text-ink'}`}>
                     {formatSignedAmount(transaction)}
                   </Text>
                 </Pressable>
               ))
             ) : (
-              <Text className="px-3 py-4 text-center text-sm text-muted">Tidak ada transaksi</Text>
+              <Text className="px-sm py-md text-center text-body-sm text-muted">Tidak ada transaksi</Text>
             )}
           </ScrollView>
         </View>

@@ -35,39 +35,39 @@ function CategoryRow({
   canDelete: boolean;
 }) {
   return (
-    <View className={indent ? 'ml-6' : ''}>
+    <View className={indent ? 'ml-md' : ''}>
       <Pressable
         onPress={onPress}
-        className="flex-row items-center justify-between border-b border-fill bg-card px-3 py-3">
-        <View className="flex-row items-center gap-2">
-          <Text className="text-ink">{category.name}</Text>
-          {!category.active && <Text className="rounded-full bg-fill px-2 py-0.5 text-xs text-muted">nonaktif</Text>}
+        className="flex-row items-center justify-between border-b border-fill bg-card px-sm py-sm">
+        <View className="flex-row items-center gap-xs">
+          <Text className="text-body-md text-ink">{category.name}</Text>
+          {!category.active && <Text className="rounded-pill bg-fill px-xs py-xxs text-caption text-muted">nonaktif</Text>}
         </View>
-        <Text className="text-muted">{editing ? '▾' : '▸'}</Text>
+        <Text className="text-body-md text-muted">{editing ? '▾' : '▸'}</Text>
       </Pressable>
 
       {editing && (
-        <View className="gap-2 border-b border-fill bg-fill px-3 py-3">
+        <View className="gap-xs border-b border-fill bg-fill px-sm py-sm">
           <TextInput
             value={editing.name}
             onChangeText={onChangeEditName}
-            className="rounded-lg border-3 border-line bg-card px-3 py-2 text-ink"
+            className="rounded-md border-3 border-line bg-card px-sm py-xs text-ink"
           />
-          <View className="flex-row gap-2">
-            <Pressable onPress={() => onRename(category)} className="flex-1 items-center rounded-lg bg-frame py-2">
-              <Text className="font-bold text-card">Simpan nama</Text>
+          <View className="flex-row gap-xs">
+            <Pressable onPress={() => onRename(category)} className="flex-1 items-center rounded-md bg-frame py-xs">
+              <Text className="text-button font-bold text-card">Simpan nama</Text>
             </Pressable>
             <Pressable
               onPress={() => onToggleActive(category)}
-              className="flex-1 items-center rounded-lg border-3 border-line py-2">
-              <Text className="font-bold text-ink">{category.active ? 'Nonaktifkan' : 'Aktifkan'}</Text>
+              className="flex-1 items-center rounded-md border-3 border-line py-xs">
+              <Text className="text-button font-bold text-ink">{category.active ? 'Nonaktifkan' : 'Aktifkan'}</Text>
             </Pressable>
           </View>
           <Pressable
             onPress={() => onDelete(category)}
             disabled={!canDelete}
-            className={`items-center rounded-lg border-3 py-2 ${canDelete ? 'border-line' : 'border-fill-2'}`}>
-            <Text className={`font-bold ${canDelete ? 'text-muted' : 'text-fill-2'}`}>
+            className={`items-center rounded-md border-3 py-xs ${canDelete ? 'border-line' : 'border-fill-2'}`}>
+            <Text className={`text-button font-bold ${canDelete ? 'text-muted' : 'text-fill-2'}`}>
               {canDelete ? 'Hapus' : 'Tidak bisa dihapus — sudah dipakai'}
             </Text>
           </Pressable>
@@ -145,11 +145,11 @@ export default function ManageCategoryScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-paper">
-      <View className="flex-row items-center justify-between px-4 py-2">
+      <View className="flex-row items-center justify-between px-md py-xs">
         <Pressable onPress={() => router.back()}>
-          <Text className="text-muted">Tutup</Text>
+          <Text className="text-body-sm text-muted">Tutup</Text>
         </Pressable>
-        <Text className="font-bold text-ink">Kelola Kategori</Text>
+        <Text className="text-title-sm font-bold text-ink">Kelola Kategori</Text>
         <View className="w-10" />
       </View>
 
@@ -161,12 +161,12 @@ export default function ManageCategoryScreen() {
           setEditingId(null);
           setAddingUnder(null);
         }}
-        className="mx-4"
+        className="mx-md"
       />
 
-      <ScrollView className="flex-1 px-4 pt-3">
+      <ScrollView className="flex-1 px-md pt-sm">
         {tree.map((group) => (
-          <View key={group.parent.id} className="mb-3 overflow-hidden rounded-xl border-3 border-frame">
+          <View key={group.parent.id} className="mb-sm overflow-hidden rounded-lg border-3 border-frame">
             <CategoryRow
               category={group.parent}
               indent={false}
@@ -194,16 +194,16 @@ export default function ManageCategoryScreen() {
             ))}
 
             {addingUnder === group.parent.id ? (
-              <View className="ml-6 gap-2 bg-fill px-3 py-3">
+              <View className="ml-md gap-xs bg-fill px-sm py-sm">
                 <TextInput
                   value={newCategoryName}
                   onChangeText={setNewCategoryName}
                   placeholder="Nama subkategori"
                   placeholderTextColor={colors.muted}
-                  className="rounded-lg border-3 border-line bg-card px-3 py-2 text-ink"
+                  className="rounded-md border-3 border-line bg-card px-sm py-xs text-ink"
                 />
-                <Pressable onPress={addCategory} className="items-center rounded-lg bg-frame py-2">
-                  <Text className="font-bold text-card">Tambah subkategori</Text>
+                <Pressable onPress={addCategory} className="items-center rounded-md bg-frame py-xs">
+                  <Text className="text-button font-bold text-card">Tambah subkategori</Text>
                 </Pressable>
               </View>
             ) : (
@@ -213,24 +213,24 @@ export default function ManageCategoryScreen() {
                   setNewCategoryName('');
                   setEditingId(null);
                 }}
-                className="ml-6 items-center border-t border-fill bg-card py-2">
-                <Text className="text-xs text-muted">+ Tambah subkategori</Text>
+                className="ml-md items-center border-t border-fill bg-card py-xs">
+                <Text className="text-caption text-muted">+ Tambah subkategori</Text>
               </Pressable>
             )}
           </View>
         ))}
 
         {addingUnder === 'top' ? (
-          <View className="mb-4 gap-2 rounded-xl border-3 border-dashed border-line px-3 py-3">
+          <View className="mb-lg gap-xs rounded-lg border-3 border-dashed border-line px-sm py-sm">
             <TextInput
               value={newCategoryName}
               onChangeText={setNewCategoryName}
               placeholder="Nama kategori"
               placeholderTextColor={colors.muted}
-              className="rounded-lg border-3 border-line bg-card px-3 py-2 text-ink"
+              className="rounded-md border-3 border-line bg-card px-sm py-xs text-ink"
             />
-            <Pressable onPress={addCategory} className="items-center rounded-lg bg-frame py-2">
-              <Text className="font-bold text-card">Tambah kategori</Text>
+            <Pressable onPress={addCategory} className="items-center rounded-md bg-frame py-xs">
+              <Text className="text-button font-bold text-card">Tambah kategori</Text>
             </Pressable>
           </View>
         ) : (
@@ -240,8 +240,8 @@ export default function ManageCategoryScreen() {
               setNewCategoryName('');
               setEditingId(null);
             }}
-            className="mb-4 items-center rounded-xl border-3 border-dashed border-line py-3">
-            <Text className="font-bold text-muted">+ Tambah Kategori</Text>
+            className="mb-lg items-center rounded-lg border-3 border-dashed border-line py-sm">
+            <Text className="text-button font-bold text-muted">+ Tambah Kategori</Text>
           </Pressable>
         )}
       </ScrollView>

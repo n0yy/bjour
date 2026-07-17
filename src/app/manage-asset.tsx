@@ -71,51 +71,51 @@ export default function ManageAssetScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-paper">
-      <View className="flex-row items-center justify-between px-4 py-2">
+      <View className="flex-row items-center justify-between px-md py-xs">
         <Pressable onPress={() => router.back()}>
-          <Text className="text-muted">Batal</Text>
+          <Text className="text-body-sm text-muted">Batal</Text>
         </Pressable>
-        <Text className="font-bold text-ink">{isEditing ? 'Ubah Aset' : 'Tambah Aset'}</Text>
+        <Text className="text-title-sm font-bold text-ink">{isEditing ? 'Ubah Aset' : 'Tambah Aset'}</Text>
         <View className="w-10" />
       </View>
 
-      <View className="flex-row items-center gap-2 border-b border-fill px-4 py-3">
-        <Text className="w-24 text-xs uppercase text-muted">Nama</Text>
+      <View className="flex-row items-center gap-xs border-b border-fill px-md py-sm">
+        <Text className="w-24 text-caption-uppercase text-muted">Nama</Text>
         <TextInput
           value={name}
           onChangeText={setName}
           placeholder="mis. Rekening BCA"
           placeholderTextColor={colors.muted}
-          className="flex-1 text-ink"
+          className="flex-1 text-body-md text-ink"
         />
       </View>
 
-      <View className="border-b border-fill px-4 py-3">
-        <Text className="mb-2 text-xs uppercase text-muted">Jenis</Text>
+      <View className="border-b border-fill px-md py-sm">
+        <Text className="mb-xs text-caption-uppercase text-muted">Jenis</Text>
         <SegmentedControl options={KIND_OPTIONS} value={kind} onChange={setKind} />
       </View>
 
       {isEditing ? (
-        <View className="flex-row items-center gap-2 border-b border-fill px-4 py-3">
-          <Text className="w-24 text-xs uppercase text-muted">Saldo awal</Text>
-          <Text className="font-semibold text-ink tabular-nums">{formatRupiah(openingBalance)}</Text>
+        <View className="flex-row items-center gap-xs border-b border-fill px-md py-sm">
+          <Text className="w-24 text-caption-uppercase text-muted">Saldo awal</Text>
+          <Text className="text-title-sm font-semibold text-ink tabular-nums">{formatRupiah(openingBalance)}</Text>
         </View>
       ) : (
-        <Text className="border-b-2 border-ink px-4 py-3 text-right font-display text-3xl font-bold text-ink tabular-nums">
+        <Text className="border-b-2 border-ink px-md py-sm text-right font-display text-display-sm font-bold text-ink tabular-nums">
           {formatRupiah(openingBalance)}
         </Text>
       )}
 
       {isEditing && (
-        <View className="gap-2 px-4 py-3">
-          <Pressable onPress={toggleActive} className="items-center rounded-xl border-3 border-line py-3">
-            <Text className="font-bold text-ink">{active ? 'Nonaktifkan' : 'Aktifkan'}</Text>
+        <View className="gap-xs px-md py-sm">
+          <Pressable onPress={toggleActive} className="items-center rounded-md border-3 border-line py-sm">
+            <Text className="text-button font-bold text-ink">{active ? 'Nonaktifkan' : 'Aktifkan'}</Text>
           </Pressable>
           <Pressable
             onPress={remove}
             disabled={!canDelete}
-            className={`items-center rounded-xl border-3 py-3 ${canDelete ? 'border-line' : 'border-fill'}`}>
-            <Text className={`font-bold ${canDelete ? 'text-muted' : 'text-fill-2'}`}>
+            className={`items-center rounded-md border-3 py-sm ${canDelete ? 'border-line' : 'border-fill'}`}>
+            <Text className={`text-button font-bold ${canDelete ? 'text-muted' : 'text-fill-2'}`}>
               {canDelete ? 'Hapus' : 'Tidak bisa dihapus — sudah dipakai'}
             </Text>
           </Pressable>
@@ -126,8 +126,8 @@ export default function ManageAssetScreen() {
         <Pressable
           onPress={save}
           disabled={!name.trim()}
-          className={`mx-4 mb-4 mt-auto items-center rounded-xl py-4 ${name.trim() ? 'bg-frame' : 'bg-fill-2'}`}>
-          <Text className={`text-lg font-bold ${name.trim() ? 'text-card' : 'text-muted'}`}>Simpan</Text>
+          className={`mx-md mb-lg mt-auto items-center rounded-md py-md ${name.trim() ? 'bg-frame' : 'bg-fill-2'}`}>
+          <Text className={`text-button font-bold ${name.trim() ? 'text-card' : 'text-muted'}`}>Simpan</Text>
         </Pressable>
       ) : (
         <AmountKeypad onPressKey={pressKey} actionLabel="Simpan" actionDisabled={!name.trim()} onPressAction={save} />

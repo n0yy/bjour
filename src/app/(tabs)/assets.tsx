@@ -64,37 +64,37 @@ export default function AssetsScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-paper" edges={['top', 'left', 'right']}>
-      <View className="flex-1 px-4 pt-2">
-        <Text className="mb-3 text-center font-display text-lg font-bold text-ink">Aset</Text>
+      <View className="flex-1 px-md pt-xs">
+        <Text className="mb-sm text-center font-display text-title-lg font-bold text-ink">Aset</Text>
 
-        <View className="mb-3 rounded-xl border-3 border-frame bg-fill-2 px-3 py-3">
-          <Text className="text-xs uppercase text-muted">Total kekayaan</Text>
-          <Text className="font-display text-2xl font-bold text-ink tabular-nums">{formatRupiah(totalWealth)}</Text>
+        <View className="mb-sm rounded-lg border-3 border-frame bg-fill-2 px-sm py-sm">
+          <Text className="text-caption-uppercase text-muted">Total kekayaan</Text>
+          <Text className="font-display text-title-lg font-bold text-ink tabular-nums">{formatRupiah(totalWealth)}</Text>
         </View>
 
         <FlatList
           data={groups}
           keyExtractor={(group) => group.label}
           renderItem={({ item: group }) => (
-            <View className="mb-3">
-              <Text className="mb-1 rounded bg-fill-2 px-2 py-1 text-xs font-bold uppercase tracking-wide text-muted">
+            <View className="mb-sm">
+              <Text className="mb-xxs rounded-xs bg-fill-2 px-xs py-xxs text-caption-uppercase font-bold tracking-wide text-muted">
                 {group.label}
               </Text>
-              <View className="overflow-hidden rounded-xl border-3 border-frame">
+              <View className="overflow-hidden rounded-lg border-3 border-frame">
                 {group.assets.map((asset) => (
                   <Pressable
                     key={asset.id}
                     onPress={() => router.push({ pathname: '/manage-asset', params: { id: asset.id } })}
-                    className={`flex-row items-center justify-between border-b border-fill bg-card px-3 py-3 ${
+                    className={`flex-row items-center justify-between border-b border-fill bg-card px-sm py-sm ${
                       asset.active ? '' : 'opacity-50'
                     }`}>
-                    <View className="flex-row items-center gap-2">
-                      <Text className="text-ink">{asset.name}</Text>
+                    <View className="flex-row items-center gap-xs">
+                      <Text className="text-body-md text-ink">{asset.name}</Text>
                       {!asset.active && (
-                        <Text className="rounded-full bg-fill px-2 py-0.5 text-xs text-muted">nonaktif</Text>
+                        <Text className="rounded-pill bg-fill px-xs py-xxs text-caption text-muted">nonaktif</Text>
                       )}
                     </View>
-                    <Text className="font-semibold text-ink tabular-nums">{formatRupiah(asset.balance)}</Text>
+                    <Text className="text-title-sm font-semibold text-ink tabular-nums">{formatRupiah(asset.balance)}</Text>
                   </Pressable>
                 ))}
               </View>
@@ -104,8 +104,8 @@ export default function AssetsScreen() {
 
         <Pressable
           onPress={() => router.push('/manage-asset')}
-          className="mb-4 items-center rounded-xl border-3 border-dashed border-line py-3">
-          <Text className="font-bold text-muted">+ Tambah Aset</Text>
+          className="mb-lg items-center rounded-lg border-3 border-dashed border-line py-sm">
+          <Text className="text-button font-bold text-muted">+ Tambah Aset</Text>
         </Pressable>
       </View>
     </SafeAreaView>

@@ -57,7 +57,7 @@ export default function StatsScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-paper" edges={['top', 'left', 'right']}>
-      <View className="flex-1 px-4 pt-2">
+      <View className="flex-1 px-md pt-xs">
         <MonthNav />
 
         <SegmentedControl options={DIRECTION_OPTIONS} value={direction} onChange={setDirection} />
@@ -66,29 +66,29 @@ export default function StatsScreen() {
 
         <ScrollView className="flex-1">
           {stats.length === 0 ? (
-            <Text className="py-6 text-center text-sm text-muted">Belum ada data bulan ini</Text>
+            <Text className="py-lg text-center text-body-sm text-muted">Belum ada data bulan ini</Text>
           ) : (
             stats.map((stat) => (
               <View key={stat.categoryId} className="border-b border-fill">
-                <Pressable onPress={() => toggleDrilldown(stat.categoryId)} className="flex-row items-center gap-2 py-2">
-                  <View className="h-3 w-3 rounded-sm" style={{ backgroundColor: categoryColor(stat.categoryId, palette) }} />
-                  <Text className="flex-1 text-ink">{stat.name}</Text>
-                  <Text className="text-xs text-muted">{Math.round(stat.percentage)}%</Text>
-                  <Text className="ml-2 font-semibold text-ink tabular-nums">{formatRupiah(stat.total)}</Text>
+                <Pressable onPress={() => toggleDrilldown(stat.categoryId)} className="flex-row items-center gap-xs py-xs">
+                  <View className="h-3 w-3 rounded-xs" style={{ backgroundColor: categoryColor(stat.categoryId, palette) }} />
+                  <Text className="flex-1 text-body-md text-ink">{stat.name}</Text>
+                  <Text className="text-caption text-muted">{Math.round(stat.percentage)}%</Text>
+                  <Text className="ml-sm text-title-sm font-semibold text-ink tabular-nums">{formatRupiah(stat.total)}</Text>
                 </Pressable>
 
                 {expandedCategoryId === stat.categoryId && (
-                  <View className="mb-2 rounded-lg bg-fill px-2 py-1">
+                  <View className="mb-xs rounded-md bg-fill px-xs py-xxs">
                     {drilldownTransactions.length === 0 ? (
-                      <Text className="py-2 text-center text-xs text-muted">Memuat…</Text>
+                      <Text className="py-sm text-center text-caption text-muted">Memuat…</Text>
                     ) : (
                       drilldownTransactions.map((transaction) => (
                         <Pressable
                           key={transaction.id}
                           onPress={() => router.push({ pathname: '/quick-entry', params: { id: transaction.id } })}
-                          className="flex-row items-center justify-between border-b border-fill-2 px-2 py-2">
-                          <Text className="text-sm text-ink">{transactionLabel(transaction)}</Text>
-                          <Text className="text-sm font-semibold text-ink tabular-nums">{formatSignedAmount(transaction)}</Text>
+                          className="flex-row items-center justify-between border-b border-fill-2 px-xs py-xs">
+                          <Text className="text-body-sm text-ink">{transactionLabel(transaction)}</Text>
+                          <Text className="text-body-sm font-semibold text-ink tabular-nums">{formatSignedAmount(transaction)}</Text>
                         </Pressable>
                       ))
                     )}

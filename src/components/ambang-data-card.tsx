@@ -11,17 +11,17 @@ export function AmbangDataCard({ status, onPress }: { status: AmbangDataStatus; 
   return (
     <Pressable
       onPress={onPress}
-      className="mb-3 flex-row items-center gap-3 rounded-xl border-3 border-line px-3 py-3">
+      className="mb-sm flex-row items-center gap-sm rounded-lg border-3 border-line px-sm py-sm">
       <ProgressRing
         size={44}
         progress={status.daysSinceFirstTransaction / status.requiredDays}
         label={status.isMet ? '✓' : `${daysDone}/${status.requiredDays}`}
       />
       <View className="flex-1">
-        <Text className="font-bold text-ink">
+        <Text className="text-title-sm font-semibold text-ink">
           {status.isMet ? 'Analisismu siap' : 'Analisismu sedang disiapkan'}
         </Text>
-        <Text className="text-xs text-muted">
+        <Text className="text-body-sm text-muted">
           {status.isMet ? 'Ketuk untuk aktifkan BJour+' : `${daysRemaining} hari lagi menuju BJour+`}
         </Text>
       </View>

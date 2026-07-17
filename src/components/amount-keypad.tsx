@@ -14,20 +14,20 @@ export function AmountKeypad({
   onPressAction: () => void;
 }) {
   return (
-    <View className="mt-auto flex-row flex-wrap gap-2 p-3">
+    <View className="mt-auto flex-row flex-wrap gap-xs p-sm">
       {KEYS.map((key) => (
         <Pressable
           key={key}
           onPress={() => onPressKey(key)}
-          className="basis-[30%] grow items-center rounded-xl bg-fill py-4">
-          <Text className="text-lg font-semibold text-ink">{key}</Text>
+          className="basis-[30%] grow items-center rounded-md bg-fill py-md">
+          <Text className="text-title-md font-semibold text-ink">{key}</Text>
         </Pressable>
       ))}
       <Pressable
         onPress={onPressAction}
         disabled={actionDisabled}
-        className={`basis-full items-center rounded-xl py-4 ${actionDisabled ? 'bg-fill-2' : 'bg-frame'}`}>
-        <Text className={`text-lg font-bold ${actionDisabled ? 'text-muted' : 'text-card'}`}>{actionLabel}</Text>
+        className={`basis-full items-center rounded-md py-md ${actionDisabled ? 'bg-fill-2' : 'bg-frame'}`}>
+        <Text className={`text-title-md font-bold ${actionDisabled ? 'text-muted' : 'text-card'}`}>{actionLabel}</Text>
       </Pressable>
     </View>
   );

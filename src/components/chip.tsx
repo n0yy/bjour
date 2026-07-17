@@ -4,10 +4,12 @@ export function Chip({ label, selected, onPress }: { label: string; selected: bo
   return (
     <Pressable
       onPress={onPress}
-      className={`mx-1 justify-center rounded-full border-3 px-4 py-2 ${
+      className={`mx-xxs justify-center rounded-pill border-3 px-md py-xs ${
         selected ? 'border-frame bg-frame' : 'border-line bg-fill'
       }`}>
-      <Text className={selected ? 'font-bold text-card' : 'text-ink'}>{label}</Text>
+      <Text className={`${selected ? 'font-semibold' : ''} text-body-sm ${selected ? 'text-card' : 'text-ink'}`}>
+        {label}
+      </Text>
     </Pressable>
   );
 }

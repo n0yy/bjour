@@ -140,24 +140,24 @@ export default function QuickEntryScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-paper">
-      <View className="flex-row items-center justify-between px-4 py-2">
+      <View className="flex-row items-center justify-between px-md py-xs">
         <Pressable onPress={() => router.back()}>
-          <Text className="text-muted">Batal</Text>
+          <Text className="text-body-sm text-muted">Batal</Text>
         </Pressable>
-        <Text className="font-bold text-ink">{TITLE_BY_KIND[kind]}</Text>
+        <Text className="text-title-sm font-bold text-ink">{TITLE_BY_KIND[kind]}</Text>
         <View className="w-10" />
       </View>
 
-      <SegmentedControl options={SEGMENTS} value={kind} onChange={setKind} className="mx-4" />
+      <SegmentedControl options={SEGMENTS} value={kind} onChange={setKind} className="mx-md" />
 
-      <Text className="border-b-2 border-ink px-4 py-3 text-right font-display text-3xl font-bold text-ink tabular-nums">
+      <Text className="border-b-2 border-ink px-md py-sm text-right font-display text-display-sm font-bold text-ink tabular-nums">
         {formatRupiah(amount)}
       </Text>
 
       {kind === 'transfer' ? (
         <>
-          <View className="flex-row items-center gap-2 border-b border-fill px-4 py-2">
-            <Text className="w-16 text-xs uppercase text-muted">Dari</Text>
+          <View className="flex-row items-center gap-xs border-b border-fill px-md py-xs">
+            <Text className="w-16 text-caption-uppercase text-muted">Dari</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {pickableAssets.map((asset) => (
                 <Chip
@@ -169,8 +169,8 @@ export default function QuickEntryScreen() {
               ))}
             </ScrollView>
           </View>
-          <View className="flex-row items-center gap-2 border-b border-fill px-4 py-2">
-            <Text className="w-16 text-xs uppercase text-muted">Ke</Text>
+          <View className="flex-row items-center gap-xs border-b border-fill px-md py-xs">
+            <Text className="w-16 text-caption-uppercase text-muted">Ke</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {pickableAssets.map((asset) => (
                 <Chip
@@ -183,13 +183,13 @@ export default function QuickEntryScreen() {
             </ScrollView>
           </View>
           {primaryAssetId !== null && primaryAssetId === secondaryAssetId ? (
-            <Text className="px-4 pt-1 text-xs text-muted">Pilih Aset tujuan yang berbeda dari Aset asal</Text>
+            <Text className="px-md pt-xxs text-caption text-muted">Pilih Aset tujuan yang berbeda dari Aset asal</Text>
           ) : null}
         </>
       ) : (
         <>
-          <View className="flex-row items-center gap-2 border-b border-fill px-4 py-2">
-            <Text className="w-16 text-xs uppercase text-muted">Aset</Text>
+          <View className="flex-row items-center gap-xs border-b border-fill px-md py-xs">
+            <Text className="w-16 text-caption-uppercase text-muted">Aset</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {pickableAssets.map((asset) => (
                 <Chip
@@ -202,7 +202,7 @@ export default function QuickEntryScreen() {
             </ScrollView>
           </View>
 
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="border-b border-fill px-2 py-2">
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="border-b border-fill px-xs py-xs">
             {pickableCategoryTree.map((group) => (
               <Chip
                 key={group.parent.id}
@@ -214,7 +214,7 @@ export default function QuickEntryScreen() {
           </ScrollView>
 
           {selectedGroup && selectedGroup.children.length > 0 && (
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="border-b border-fill px-2 py-2">
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="border-b border-fill px-xs py-xs">
               {selectedGroup.children.map((child) => (
                 <Chip key={child.id} label={child.name} selected={categoryId === child.id} onPress={() => setCategoryId(child.id)} />
               ))}
@@ -223,28 +223,28 @@ export default function QuickEntryScreen() {
 
           <Pressable
             onPress={() => router.push({ pathname: '/manage-category', params: { direction: kind } })}
-            className="border-b border-fill px-4 py-2">
-            <Text className="text-xs text-muted">Kelola kategori…</Text>
+            className="border-b border-fill px-md py-xs">
+            <Text className="text-caption text-muted">Kelola kategori…</Text>
           </Pressable>
         </>
       )}
 
       <DateField value={date} onChange={setDate} />
 
-      <View className="flex-row items-center gap-2 border-b border-fill px-4 py-2">
-        <Text className="w-16 text-xs uppercase text-muted">Catatan</Text>
+      <View className="flex-row items-center gap-xs border-b border-fill px-md py-xs">
+        <Text className="w-16 text-caption-uppercase text-muted">Catatan</Text>
         <TextInput
           value={note}
           onChangeText={setNote}
           placeholder="opsional…"
           placeholderTextColor={colors.muted}
-          className="flex-1 text-ink"
+          className="flex-1 text-body-md text-ink"
         />
       </View>
 
       {isEditing && (
-        <Pressable onPress={remove} className="mx-4 mt-3 items-center rounded-xl border-3 border-line py-3">
-          <Text className="font-bold text-muted">Hapus</Text>
+        <Pressable onPress={remove} className="mx-md mt-sm items-center rounded-md border-3 border-line py-sm">
+          <Text className="text-button font-bold text-muted">Hapus</Text>
         </Pressable>
       )}
 

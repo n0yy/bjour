@@ -38,10 +38,10 @@ export function ProgressRing({
           origin={`${size / 2}, ${size / 2}`}
         />
       </Svg>
-      <Text className="font-display font-bold text-ink" style={{ fontSize: size * 0.16 }}>
+      <Text className="font-display text-title-sm font-bold text-ink" style={{ fontSize: size * 0.16 }}>
         {label}
       </Text>
-      {sublabel && <Text className="text-muted" style={{ fontSize: size * 0.08 }}>{sublabel}</Text>}
+      {sublabel && <Text className="text-caption text-muted" style={{ fontSize: size * 0.08 }}>{sublabel}</Text>}
     </View>
   );
 }
